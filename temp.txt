@@ -1,0 +1,23 @@
+const format = (date) => {
+        const [dd, mm, yyyy] = date.split('-');
+        return (correctDate(yyyy) + '-' + correctDate(mm) + '-' + correctDate(dd));
+    }
+
+    const correctDate = (value) => {
+
+        if (parseInt(value, 10) >= 10)
+            return value;
+        else
+            return '0' + value;
+    }
+    const checkDateRange = (date) => {
+
+        const taskTimestamp = (new Date(format(date))).getTime();
+        const startTimestamp = ((new Date(startDate)).getTime());
+        const endTimestamp = ((new Date(endDate)).getTime());
+
+        return taskTimestamp >= startTimestamp && taskTimestamp <= endTimestamp;
+    }
+
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');

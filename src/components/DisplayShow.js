@@ -1,0 +1,127 @@
+import { useState } from "react";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import useFetch from "./useFetch";
+import ExtractColorFromImage from "./ExtractColorFromImage";
+
+const DisplayShow = (props) => {
+
+    const [color, setColor] = useState(null);
+    const {showId} = useParams();
+    const [showData, setShowData] = useState(null);
+
+
+    const {err, pending, data} = useFetch(`https://api.spotify.com/v1/shows/${showId}`, 'GET', props.access_token);
+    console.log(err);
+    console.log(pending);
+    console.log(data);
+
+    const formatDuration = (duration) => {
+
+        var seconds = Math.floor((duration / 1000));
+        var minutes = 0, hour = 0;
+        minutes = Math.floor((seconds / 60));
+        seconds = seconds % 60;
+
+        while (minutes >= 60) {
+            hour += 1;
+            minutes = minutes - 60;
+        }
+        
+        if (hour != 0) {
+
+            if (minutes >= 10)
+                return (hour + " hr " + minutes + " min");
+
+            return (hour + " hr 0" + minutes + " min");
+
+        }
+
+         if (seconds < 10) 
+             return (Math.floor((duration / 60000)) + " min 0" + seconds + " sec");
+        
+         return (Math.floor((duration / 60000)) + " min " + seconds + " sec");
+        
+    }
+    return (
+        <div className=" w-full h-full">
+            { data && <div className="artist-image" style={ {
+                backgroundColor: `${color}`,
+                backdropFilter: `blur(10px)`,
+            }}>
+                <ExtractColorFromImage imageUrl={data.images[0].url} setColor={setColor}/>
+                    <img src={data.images[0].url} width="100%" height="20%" className="artist-image"></img>
+                    <div className="artist-details">
+                        <span className="artist-name">{data.name}</span>
+                        <span className="artist-followers">Podcast
+                        <span style={{fontWeight: 'bolder', fontSize: '30px', marginLeft : '4px', marginRight : '4px'}}>.</span>
+                        {data.publisher}
+                        <span style={{fontWeight: 'bolder', fontSize: '30px', marginLeft : '4px', marginRight : '4px'}}>.</span>
+                        {data.total_episodes} episodes
+                        </span>
+                    </div>
+                </div>}
+            <div className= " p-5 w-2/5 min-w-fit h-12 flex gap-5">
+                <button className="follow-button w-20 h-8  rounded-full bg-white bg-opacity-30 ">Follow</button>
+                <img src="https://img.icons8.com/ios-filled/50/FFFFFF/more.png" className="more-button w-9 h-8 " alt="more"/>
+
+
+            </div>
+            {data && <div className="show-details  mt-5 w-3/6 h-auto min-w-96  overflow-hidden text-ellipsis p-3 rounded-lg">
+                <h1 className=" text-2xl mb-4">About</h1>
+                <p>{data.description}</p>
+            </div>}
+
+            {data && <div className="episode-list flex flex-col p-10">
+                {data.episodes.items.map( (eachEpisode, index) => (
+                    <div className="each-episode w-3/4 h-auto flex gap-8 border-t-2 border-t-white"
+                    key={index}>
+
+                        <div className=" w-24 h-24 mt-3">
+                            <img
+                            src={`${eachEpisode.images[0].url}`} width="100" height="100" style={{
+                                minWidth: '80px',
+                                minHeight: '80px'
+                            }}></img>
+                        </div>
+                        <div className="episode-details w-3/4 mt-3">
+                            <div className="">
+                                <p className=" font-semibold hover:underline cursor-pointer">{eachEpisode.name}</p>
+                                <div className=" flex gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mt-1">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                                    </svg>
+                                    <span>Video<span className= " font-extrabold mr-2 ml-2">.</span><a href={`${data.external_urls.spotify}`} className=" hover:underline cursor-pointer">{data.name}</a></span>
+                                </div>
+                            </div>
+                            <div className="episode-description mt-3">
+                                    <div className="text">{eachEpisode.description}</div>
+                            </div>
+                            <div className=" mt-2">
+                                <span>{eachEpisode.release_date}<span className=" font-extrabold ml-1 mr-1">.</span><span>{formatDuration(eachEpisode.duration_ms)}</span></span>
+                            </div>
+                            <div className="tools-section flex gap-8 items-center mt-5 mb-5 hover">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8">
+                                    <path strokeLinecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <div className=" flex gap-8 items-center" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m9 12.75 3 3m0 0 3-3m-3 3v-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                    </svg>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>}
+        </div>
+    );
+}
+
+export default DisplayShow;

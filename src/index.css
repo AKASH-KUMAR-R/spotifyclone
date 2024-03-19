@@ -1,0 +1,508 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  font-family: sans-serif;
+  color: white;
+  background-color: black;
+}
+
+.Main {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow:hidden;
+}   
+
+.left-nav-container {
+  min-width: 200px;
+  width: 18%;
+  height: 100%;
+  opacity: 60;
+  margin: 8px;
+
+}
+
+/*rgb(30, 29, 29)*/
+.left-top-container {
+  width: 100%;
+  height: 12%;
+  background-color: rgb(17, 16, 16);
+  border-radius: 4%;
+}
+
+.library-container {
+  width: 100%;
+  height: 88%;
+}
+
+.library-menu-container {
+
+  width: 100%;
+  height: 14%;
+  background-color: rgb(17, 16, 16);
+  margin-top: 8px;
+  border-radius: 4%;
+  
+}
+
+.artist-playlist-container {
+  width: 100%;
+  height: 84%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  overflow: auto;
+  background-color: rgb(17, 16, 16); 
+  scrollbar-track-color: black;
+  padding: 6px;
+}
+
+.library-list {
+  width: 100%;
+  height: 80%;
+}
+
+.list {
+  margin-top: 5px;
+  padding-left: 2%;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.list:hover {
+  background-color: rgb(47, 46, 46);
+}
+.list-details {
+  margin-left: 10px;
+}
+
+.list-details h5 {
+  font-weight: 600;
+}
+
+.list-details span {
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.571);
+}
+
+.artist-photo {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*Playlist and artist section right */
+.right-container {
+  margin: 8px;
+  width: 100%;
+  height: 100%;
+  /* background: rgb(79,37,156);
+  background: linear-gradient(180deg, rgba(79,37,156,1) 0%, rgba(77,26,168,1) 24%, rgba(79,33,162,1) 37%, rgba(43,13,98,1) 64%, rgba(0,0,0,1) 100%); */
+  background-color: rgb(17, 16, 16);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sections {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.temp-section {
+  width: 100%;
+  height: 100%;
+}
+.top-section {
+  position: absolute;
+  min-width:max-content;
+  width: 94%;
+  height: 6%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+}
+
+.top-section span {
+  margin-left: 8px;
+}
+
+.right-navigation-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.playlist-overview {
+  
+  height: 34%;
+  width: 100%;
+  display: flex;
+  margin-top: 6%;
+  align-items:center;
+
+}
+
+.theme-icon { 
+  width: 30vb;
+  height: 30vb;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.theme-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.theme-details {
+  width: 74%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 8px;
+}
+
+.theme-type {
+  font-weight: 600;
+}
+
+.theme-name {
+  font-weight: 800;
+  font-size: 10vh;
+}
+
+.playlist-tools {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(25, 25, 71);
+  padding: 10px;
+}
+
+.tools span{
+  margin-left: 4px;
+}
+
+.tools svg:hover {
+  scale: 1.1;
+}
+
+.tools svg:active {
+  scale: 1;
+}
+
+.song-list {
+  background-color: rgba(0, 0, 0, 0.232);
+}
+
+.song-list span {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.heading-section {
+  width: 99%;
+  height: 60px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.421);
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: 3% 30% 40% 20%;
+  align-items: center;
+  margin: 8px;
+  column-gap: 2%;
+}
+
+.heading-section div, .each-song-details div {
+  margin-left: 8px;
+}
+
+
+.each-song-details{
+  height: 60px;
+  margin-top: 5px;
+  width: 99%;
+  column-gap: 10px;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 3% 30% 40% 20%;
+  align-items: center;
+  margin: 8px;
+  column-gap:2%;
+}
+
+.each-song-details div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.each-song-details:focus {
+  background-color: rgb(70, 70, 70);
+
+}
+
+
+.each-song-details:hover {
+  background-color: rgb(47, 46, 46);
+}
+
+/* display artist section */
+.artist-image {
+  height: 40%;
+  width: 100%;
+  /* background-color: rgba(47, 46, 46, 0.663); */
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.artist-image img {
+ margin-left: 4%;
+ width: 200px;
+ height: 200px;
+ border-radius: 8px;  
+}
+.artist-details {
+  width: auto;
+  overflow: hidden;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+  margin-left: 40px;
+}
+
+.artist-name {
+  font-size:6vh;
+}
+
+.artist-followers {
+  font-size: 20px;
+  font-family: 'Rubik', sans-serif;;
+} 
+
+.popular-section {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.heading-text {
+  font-size: x-large;
+  margin-left: 10px;
+  font-weight: 500;
+}
+.album-section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.for-design {
+  backdrop-filter: blur(0px);
+  background-color: antiquewhite;
+}
+
+.album-list {
+  
+  width: 100%;
+  height: 60%;
+  padding-left: 4%;
+  padding-right: 4%;
+  margin-top: 50px;
+  /* background-color: rgb(17, 16, 16); */
+
+}
+
+.album-top-section {
+  width: 100%;
+  height: 14%;
+  display: flex;
+  justify-content: space-between;
+
+}
+.album-top-section span {
+  font-size: xx-large;
+
+}
+
+.albums {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.album {
+  height: 260px;
+  width: 190px;
+  background-color: rgba(38, 37, 37, 0.356);
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.links{
+  margin-left: 1%;
+  margin-right: 1%;
+}
+.album:hover {
+  background-color: rgba(38, 37, 37, 1);
+}
+
+.album-image {
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+}
+
+.album-details {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+.album-details div {
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+
+/* Show section */
+.show-details {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.show-details:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.follow-button {
+  border: 1px solid rgba(255, 255, 255, 0.329);
+  scale: 0.9;
+}
+
+.follow-button:hover{
+  border: 1px solid white;
+  scale: 0.95;
+}
+
+.follow-button:active {
+  scale: 0.9;
+}
+
+.more-button:active{
+  scale: 0.95;
+}
+
+.episode-details {
+  min-height: 80px;
+}
+
+.each-episode {
+  min-height: 160px;
+  min-width: 500px;
+}
+.each-episode:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.tools-section svg{
+  stroke: rgba(255, 255, 255, 0.422);
+}
+.tools-section svg:hover{
+  scale: 1.04;
+  stroke: white;
+  cursor: pointer;
+}
+
+.tools-section svg:active {
+  scale: 1;
+}
+
+.text {
+  max-height: calc(2 * 1.2em); 
+  line-height: 1.2em; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+input:active {
+  border-color: white;
+}
+.album-details div span {
+  margin-right: 4px;
+}
+
+.button-configuration {
+  background-color: white;
+  transition: opacity 0.3s ease;
+  border-radius: 12px;
+  width: 68px;
+  height: 30px;
+  font-size: small;
+  color: black;
+}
+
+.play-button {
+  transition: 0.3s ease-in-out;
+}
+.album:hover .play-button{
+  opacity: 1;
+  transform: translateY(-20px);
+}
+
+@media screen and (max-width: 800px) {
+  .album-name {
+    display: none;
+  }
+  
+  .heading-section {
+    grid-template-columns: 3% 50% 40%;
+  }
+  .each-song-details {
+    grid-template-columns: 3% 50% 40%;
+  }
+}
+
+/* For WebKit browsers */
+::-webkit-scrollbar {
+  width: 12px; /* Set the width of the scrollbar */
+  scroll-behavior:auto;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(47, 46, 46); /* Set the color of the thumb */
+}
+
+
+::-webkit-scrollbar-track {
+  background-color: none; /* Set the color of the track */
+}
