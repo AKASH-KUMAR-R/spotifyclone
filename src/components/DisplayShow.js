@@ -11,9 +11,6 @@ const DisplayShow = (props) => {
 
 
     const {err, pending, data} = useFetch(`https://api.spotify.com/v1/shows/${showId}`, 'GET', props.access_token);
-    console.log(err);
-    console.log(pending);
-    console.log(data);
 
     const formatDuration = (duration) => {
 
@@ -27,7 +24,7 @@ const DisplayShow = (props) => {
             minutes = minutes - 60;
         }
         
-        if (hour != 0) {
+        if (hour !== 0) {
 
             if (minutes >= 10)
                 return (hour + " hr " + minutes + " min");
@@ -43,19 +40,19 @@ const DisplayShow = (props) => {
         
     }
     return (
-        <div className=" w-full h-full">
-            { data && <div className="artist-image" style={ {
+        <div className="temp-section mt-10">
+            { data && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row" style={ {
                 backgroundColor: `${color}`,
                 backdropFilter: `blur(10px)`,
             }}>
                 <ExtractColorFromImage imageUrl={data.images[0].url} setColor={setColor}/>
-                    <img src={data.images[0].url} width="100%" height="20%" className="artist-image"></img>
-                    <div className="artist-details">
-                        <span className="artist-name">{data.name}</span>
+                    <img src={data.images[0].url} className=" w-40 h-40 sm:w-52 sm:h-52 rounded-lg" alt="cover-page"></img>
+                    <div className="artist-details w-full items-center sm:ml-6 flex flex-col overflow-hidden whitespace-nowrap mt-1">
+                        <span className=" text-3xl sm:text-4xl">{data.name}</span>
                         <span className="artist-followers">Podcast
-                        <span style={{fontWeight: 'bolder', fontSize: '30px', marginLeft : '4px', marginRight : '4px'}}>.</span>
+                        <span style={{fontWeight: 'bolder', marginLeft : '4px', marginRight : '4px'}}>.</span>
                         {data.publisher}
-                        <span style={{fontWeight: 'bolder', fontSize: '30px', marginLeft : '4px', marginRight : '4px'}}>.</span>
+                        <span style={{fontWeight: 'bolder', marginLeft : '4px', marginRight : '4px'}}>.</span>
                         {data.total_episodes} episodes
                         </span>
                     </div>
@@ -71,9 +68,9 @@ const DisplayShow = (props) => {
                 <p>{data.description}</p>
             </div>}
 
-            {data && <div className="episode-list flex flex-col p-10">
+            {data && <div className=" w-full flex flex-col p-4 sm:p-10">
                 {data.episodes.items.map( (eachEpisode, index) => (
-                    <div className="each-episode w-3/4 h-auto flex gap-8 border-t-2 border-t-white"
+                    <div className="  w-full md:w-3/4 sm:h-58  flex gap-8 border-t-2 border-t-white"
                     key={index}>
 
                         <div className=" w-24 h-24 mt-3">
@@ -81,7 +78,8 @@ const DisplayShow = (props) => {
                             src={`${eachEpisode.images[0].url}`} width="100" height="100" style={{
                                 minWidth: '80px',
                                 minHeight: '80px'
-                            }}></img>
+                            }}
+                            alt="cover-page"></img>
                         </div>
                         <div className="episode-details w-3/4 mt-3">
                             <div className="">

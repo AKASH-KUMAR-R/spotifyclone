@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import PopularTrack from "./PopularTrack";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import ListItems from "./ListItems";
 
 const DisplayArtist = (props) => {
 
@@ -79,16 +80,19 @@ const DisplayArtist = (props) => {
     }, [artistId]);
 
     return (
-        <div className="temp-section">
-            { artistData && <div className="artist-image">
-                <img src={artistData.images[0].url} width="100%" height="20%"></img>
-                <div className="artist-details">
-                    <span className="artist-name">{artistData.name}</span>
+        <div className="temp-section mt-10">
+            { artistData && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row">
+                <img src={artistData.images[0].url} className=" w-40 h-40 sm:w-52 sm:h-52 rounded-lg"></img>
+                <div className="artist-details w-full items-center sm:ml-6 flex flex-col overflow-hidden whitespace-nowrap mt-1">
+                    <span className=" text-3xl sm:text-4xl">{artistData.name}</span>
                     <span className="artist-followers">Followers : {(artistData.followers.total).toLocaleString()}</span>
                 </div>
             </div>}
-            <div className="album-section">
-                <div className="for-design"></div>
+            <div className="album-section p-4">
+
+                {artistAlbumDetails && <ListItems data = {artistAlbumDetails.items} listHeadingText = "Albums"/>}
+                {relatedArtist && <ListItems data = {relatedArtist.artists} listHeadingText = "Artists" />}
+                {/* <div className="for-design"></div>
                 <div className="popular-section">
                     <div className="album-top-section"><span className="heading-text">Popular</span></div>
                     <PopularTrack  access_token = {props.access_token}/>
@@ -151,7 +155,7 @@ const DisplayArtist = (props) => {
                         </div>
 
                     </div>
-                </div>
+                </div> */}
                 
             </div>
         </div>

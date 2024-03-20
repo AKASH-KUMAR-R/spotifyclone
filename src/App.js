@@ -96,7 +96,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="Main">
-      <div className=" flex flex-col p-2 gap-4"
+      <div className=" flex flex-col p-2 gap-4 transition-all sm:hidden"
       style={{
         display: sideBarActive ? "none" : "flex",
       }}>
@@ -196,8 +196,8 @@ function App() {
         </div>
       </div>
 
-      <div className="right-container">
-      <div className="top-section flex-grow">
+      <div className="right-container relative">
+      <div className="top-section w-full absolute p-3 flex justify-between items-center z-10 ">
           <TopNav isSearchBarActive= {isSearchBarActive}/>
           <div className="flex gap-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokelinecap="round" strokeLinejoin="round" className="lucide lucide-bell">
@@ -217,9 +217,10 @@ function App() {
               </svg>
             
           </div>
+          
 
     </div>
-        <div className="sections min-w-96">
+        <div className="sections">
           <Switch>
             <Route path = "/artist/:artistId" >
                <DisplayArtist access_token = {access_token}/>

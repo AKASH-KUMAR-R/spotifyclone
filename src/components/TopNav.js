@@ -11,7 +11,7 @@ const TopNav = (props) => {
         history.goBack();
     }
     return (
-          <div className="top-nav flex gap-5 items-center">
+          <div className=" flex gap-5 items-center">
           <div className=" flex gap-3 ml-3">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6" onClick={ () => {
                 moveBackward();

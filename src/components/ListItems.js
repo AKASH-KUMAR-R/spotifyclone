@@ -17,30 +17,24 @@ const ListItems = (props) => {
 
     return (
         <div>
-            <div className="album-top-section">
+            <div className=" w-12/12 flex items-center justify-between text-2xl md:text-3xl">
                 <div><span>{props.listHeadingText}</span></div>
-            <div>Show all</div>
+            <div className=" text-sm">Show all</div>
                     </div>
-                    <div className="albums">
-                        <div className="sections" style={ {
-                            display: "flex",
-                            alignItems: 'center',
-
-                        }}>
+                    <div className="albums h-60 sm:h-72">
+                        <div className="sections flex items-center">
                             {(props.listHeadingText === "New Releases" || props.listHeadingText === "Albums" || props.listHeadingText === "Artists") && data && data.map( (eachItem) => (
                                 <Link to={props.listHeadingText === "Artists" ?  `/artist/${eachItem.id}` : `/album/${eachItem.id}`} className= "links">
-                                    <div className="album">
-                                    <div className="album-image relative">
+                                    <div className="album w-40 h-52 sm:w-48 sm:h-64">
+                                    <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
                                         {eachItem.images[0] && <img src={eachItem.images[0].url} style = { {
                                             borderRadius : props.listHeadingText === "Artists" ? "100%" : "8px",
-                                            width : "400px",
-                                            height : "160px"
                                         }} alt="cover-page"></img>}
                                         <div className="play-button absolute top-28 left-24 opacity-0" onClick={ () => {
                                             handleSong();
                                         }}><PlayButtonIcon/></div>
                                     </div>
-                                    <div className="album-details">
+                                    <div className="album-details sm:text-xl">
                                         <div><span>{eachItem.name}</span></div>
                                         <div><span>{(eachItem.type).charAt(0).toUpperCase() + (eachItem.type).slice(1)}</span></div>
                                     </div>
@@ -51,12 +45,10 @@ const ListItems = (props) => {
 
                             { (props.listHeadingText === "Popular Genres Based" || props.listHeadingText === "Fitness Motivation") && data && data.map( (eachItem) => (
                                 <Link to={`/album/${eachItem.album.id}`} className= "links">
-                                    <div className="album">
-                                    <div className="album-image relative">
+                                    <div className="album w-40 h-52 sm:w-48 sm:h-64">
+                                    <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
                                         <img src={eachItem.album.images[0].url} style = { {
                                             borderRadius : "8px",
-                                            width : "400px",
-                                            height : "160px"
                                         }} alt="cover-page"></img>
                                         <div className="play-button absolute top-28 left-24 opacity-0" onClick={ () => {
                                             handleSong();
@@ -72,12 +64,10 @@ const ListItems = (props) => {
 
                             { (props.listHeadingText === "Popular Playlist" || props.listHeadingText === "Shows to try" || props.listHeadingText === "Shows" || props.listHeadingText === "Popular Episodes" ||props.listHeadingText === "Episodes") && data && data.map( (eachItem) => (
                                 <Link to={(props.listHeadingText === "Shows to try" || props.listHeadingText === "Shows") ? `show/${eachItem.id}` : props.listHeadingText === "Popular Playlist" ? `/playlist/${eachItem.id}` : `/episode/${eachItem.id}`} className= "links">
-                                    <div className="album">
-                                    <div className="album-image relative">
+                                    <div className="album w-40 h-52 sm:w-48 sm:h-64">
+                                    <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
                                         <img src={eachItem.images[0].url} style = { {
                                             borderRadius : "8px",
-                                            width : "400px",
-                                            height : "160px"
                                         }} alt="cover-page"></img>
                                         <div className="play-button absolute top-28 left-24 opacity-0" onClick={ () => {
                                             handleSong();

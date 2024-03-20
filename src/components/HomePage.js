@@ -184,6 +184,8 @@ const HomePage = (props) => {
       })
     }, []);
 
+    
+
 
     return (
         <div className="homepage-section flex flex-col p-5"> 
