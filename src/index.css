@@ -235,6 +235,7 @@ body {
   align-items: center;
   margin: 8px;
   column-gap:2%;
+  transition: 0.2s;
 }
 
 .each-song-details div {
@@ -432,9 +433,8 @@ input:active {
   background-color: white;
   transition: opacity 0.3s ease;
   border-radius: 12px;
-  width: 68px;
-  height: 30px;
-  font-size: small;
+  width: 60px;
+  height: 26px;
   color: black;
 }
 
@@ -446,6 +446,20 @@ input:active {
   transform: translateY(-20px);
 }
 
+.text-twoline-wrap {
+    line-height: 1.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;  
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    max-height: calc(1.4rem * 2); 
+}
+
+.grid-layout-2-2 {
+  display: grid;
+  grid-template-columns: 6rem 75%;
+}
 @media screen and (max-width: 800px) {
   .album-name {
     display: none;

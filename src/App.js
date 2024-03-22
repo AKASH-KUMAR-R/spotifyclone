@@ -96,7 +96,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="Main">
-      <div className=" flex flex-col p-2 gap-4 transition-all sm:hidden"
+      <div className=" flex flex-col p-2 gap-4 transition-all xl:flex"
       style={{
         display: sideBarActive ? "none" : "flex",
       }}>
@@ -126,7 +126,7 @@ function App() {
       </div>
       <div className="left-nav-container"
       style={{
-        display: sideBarActive ? "block" : "none",
+        display: !sideBarActive ? "block" : "none",
       }} >
         <div className="left-top-container flex-col p-4">
           <Link to="/">
@@ -217,6 +217,7 @@ function App() {
               </svg>
             
           </div>
+          
           
 
     </div>

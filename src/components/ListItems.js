@@ -17,7 +17,7 @@ const ListItems = (props) => {
 
     return (
         <div>
-            <div className=" w-12/12 flex items-center justify-between text-2xl md:text-3xl">
+            <div className=" w-full flex items-center justify-between text-2xl md:text-3xl">
                 <div><span>{props.listHeadingText}</span></div>
             <div className=" text-sm">Show all</div>
                     </div>
@@ -30,7 +30,7 @@ const ListItems = (props) => {
                                         {eachItem.images[0] && <img src={eachItem.images[0].url} style = { {
                                             borderRadius : props.listHeadingText === "Artists" ? "100%" : "8px",
                                         }} alt="cover-page"></img>}
-                                        <div className="play-button absolute top-28 left-24 opacity-0" onClick={ () => {
+                                        <div className="play-button absolute top-28 left-24 opacity-0 hidden xl:block" onClick={ () => {
                                             handleSong();
                                         }}><PlayButtonIcon/></div>
                                     </div>
@@ -75,7 +75,7 @@ const ListItems = (props) => {
                                     </div>
                                     <div className="album-details">
                                         <div><span>{eachItem.name}</span></div>
-                                        <div className=" mt-2"><span>{(eachItem.description).charAt(0).toUpperCase() + (eachItem.description).slice(1)}</span></div>
+                                        <div className=" mt-2 text-sm sm:text-normal"><span>{(eachItem.description).charAt(0).toUpperCase() + (eachItem.description).slice(1)}</span></div>
                                     </div>
                                 </div>
                                 </Link>
