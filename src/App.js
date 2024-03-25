@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import TopNav from "./components/TopNav";
 import DisplayArtist from "./components/DisplayArtist";
 import { BrowserRouter, Switch , Route} from "react-router-dom";
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import DisplayAlbum from "./components/DisplayAlbum";
 import HomePage from "./components/HomePage";
 import DisplayPlaylist from "./components/DisplayPlaylist";
@@ -15,8 +15,8 @@ import { ExpandIcon, HomeIcon, LibraryIcon, PlusIcon, SearchIcon } from "./compo
 
 function App() {
 
-  const clientId = 'c9adbd62547c49f496f22706aa689171';
-  const secretId = 'a2041aa7b50746e0a3b3087fd5331602';
+  const clientId = process.env.REACT_APP_SPOTIFY_WEB_CLIENT_ID;
+  const secretId = process.env.REACT_APP_SPOTIFY_WEB_SECRET_ID;
   const ids = ['3TVXtAsR1Inumwj472S9r4', '6qqNVTkY8uBg9cP3Jd7DAH', 
   '4EVpmkEwrLYEg6jIsiPMIb', '3kjuyTCjPG1WMFCiyc5IuB', '4EVpmkEwrLYEg6jIsiPMIb', 
   '3CQIn7N5CuRDP8wEI7FiDA', '6g0mn3tzAds6aVeUYRsryU', '0K1q0nXQ8is36PzOKAMbNe'];
@@ -33,12 +33,13 @@ function App() {
   clientData.append('client_id', clientId);
   clientData.append('client_secret', secretId);
 
-  const history = useHistory();
+
   const [sideBarActive, setSideBarStatus] = useState(true);
   
 
   useEffect( () => {
 
+      console.log("PORT:", process.env.REACT_APP_PORT);
       fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
@@ -96,7 +97,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="Main">
-      <div className=" flex flex-col p-2 gap-4 transition-all xl:flex"
+      <div className=" flex flex-col p-2 gap-4 transition-all xl:flex "
       style={{
         display: sideBarActive ? "none" : "flex",
       }}>
@@ -105,7 +106,7 @@ function App() {
           <Link to="/search" className = " links"><SearchIcon /></Link>
         </div>
         
-        <div className=" flex flex-col p-2 gap-4 bg-stone-950 w-16 rounded-md items-center">
+        <div className=" flex flex-col p-2 gap-4 bg-stone-950 w-16 rounded-md items-center overflow-y-auto">
           <div
           onClick={() => {
             setSideBarStatus(prev => !prev);
@@ -126,7 +127,7 @@ function App() {
       </div>
       <div className="left-nav-container"
       style={{
-        display: !sideBarActive ? "block" : "none",
+        display: sideBarActive ? "block" : "none",
       }} >
         <div className="left-top-container flex-col p-4">
           <Link to="/">
@@ -142,6 +143,7 @@ function App() {
 
           </div>
         </div>
+        
         <div className="library-container">
           <div className="library-menu-container p-4 flex justify-between gap-2">
             <div className="icon flex  gap-4" 
@@ -156,13 +158,9 @@ function App() {
               <PlusIcon />
             </div>
           </div>
-          
-
           <div className="artist-playlist-container">
             <div className="library-tools-container flex justify-between">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill= "white" className="w-6 h-6">
-                <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clipRule="evenodd" />
-              </svg>
+              <SearchIcon />
               <div className=" flex gap-2">
               <span>Tools</span>
               <LibraryIcon />
@@ -236,7 +234,6 @@ function App() {
               <DisplayShow access_token = {access_token}/>
             </Route>
             <Route path = "/episode/:episodeId">
-
               <DisplayEpisode access_token = {access_token}/>
             </Route>
             <Route path = "/search">

@@ -47,9 +47,9 @@ const ListItems = (props) => {
                                 <Link to={`/album/${eachItem.album.id}`} className= "links">
                                     <div className="album w-40 h-52 sm:w-48 sm:h-64">
                                     <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
-                                        <img src={eachItem.album.images[0].url} style = { {
+                                        {eachItem.album.images[0] && <img src={eachItem.album.images[0].url} style = { {
                                             borderRadius : "8px",
-                                        }} alt="cover-page"></img>
+                                        }} alt="cover-page"></img>}
                                         <div className="play-button absolute top-28 left-24 opacity-0" onClick={ () => {
                                             handleSong();
                                         }}><PlayButtonIcon/></div>
@@ -66,9 +66,9 @@ const ListItems = (props) => {
                                 <Link to={(props.listHeadingText === "Shows to try" || props.listHeadingText === "Shows") ? `show/${eachItem.id}` : props.listHeadingText === "Popular Playlist" ? `/playlist/${eachItem.id}` : `/episode/${eachItem.id}`} className= "links">
                                     <div className="album w-40 h-52 sm:w-48 sm:h-64">
                                     <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
-                                        <img src={eachItem.images[0].url} style = { {
+                                        { eachItem.images[0] && <img src={eachItem.images[0].url} style = { {
                                             borderRadius : "8px",
-                                        }} alt="cover-page"></img>
+                                        }} alt="cover-page"></img>}
                                         <div className="play-button absolute top-28 left-24 opacity-0" onClick={ () => {
                                             handleSong();
                                         }}><PlayButtonIcon/></div>
