@@ -69,3 +69,8 @@ const format = (date) => {
                                 </div>
                             </div>
                         </div>
+
+                        http://localhost:3000/#
+                        access_token=BQBlXbeRgO84jMA5bC8Xt1AUbLin17_F-Wuvj3z3KTcMkP61cuwsfIM_T6CHjNat7imkHqKPF0g_pKFh-L0N1MQmEnfHrU2XUEJJ_i33Lbv2q3wpsoWv5JweJGOtWRUO22bzaBoKK6NXRrSypXt4eimE52-pj8AvCAFSSU4g4BUkgQ8qKR78qijXpW-ZhWpEsbXxdys021eZ8tQiAgYaFQFCQv0oKw&
+                        token_type=Bearer&
+                        expires_in=3600

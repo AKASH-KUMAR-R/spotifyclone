@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import TopNav from "./components/TopNav";
 import DisplayArtist from "./components/DisplayArtist";
 import { BrowserRouter, Switch , Route} from "react-router-dom";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+
 import DisplayAlbum from "./components/DisplayAlbum";
 import HomePage from "./components/HomePage";
 import DisplayPlaylist from "./components/DisplayPlaylist";
 import DisplayShow from "./components/DisplayShow";
 import DisplayEpisode from "./components/DisplayEpisode";
 import SearchBar from "./components/SearchPage";
-import { ExpandIcon, HomeIcon, LibraryIcon, PlusIcon, SearchIcon } from "./components/Icons/Icons";
+import { LoginSection } from "./components/LoginSection";
+
+import { LibrarySection } from "./components/LibrarySection";
+import { SlideLibrary } from "./components/SlideLibrary";
 
 
 
@@ -17,29 +20,19 @@ function App() {
 
   const clientId = process.env.REACT_APP_SPOTIFY_WEB_CLIENT_ID;
   const secretId = process.env.REACT_APP_SPOTIFY_WEB_SECRET_ID;
-  const ids = ['3TVXtAsR1Inumwj472S9r4', '6qqNVTkY8uBg9cP3Jd7DAH', 
-  '4EVpmkEwrLYEg6jIsiPMIb', '3kjuyTCjPG1WMFCiyc5IuB', '4EVpmkEwrLYEg6jIsiPMIb', 
-  '3CQIn7N5CuRDP8wEI7FiDA', '6g0mn3tzAds6aVeUYRsryU', '0K1q0nXQ8is36PzOKAMbNe'];
-
-  const [access_token, setAccessToken] = useState(null);
-  const [artist, setArtist] = useState(null);
-
-  const [libraryData, setLibraryData] = useState(null);
-  const [isSearchBarActive, setSearchStatus] = useState(false);
-
 
   const clientData = new URLSearchParams();
   clientData.append('grant_type', 'client_credentials');
   clientData.append('client_id', clientId);
   clientData.append('client_secret', secretId);
 
+  const [access_token, setAccessToken] = useState(null);
+  const [showLibrary, setShowLibrary]= useState(false);
 
-  const [sideBarActive, setSideBarStatus] = useState(true);
   
 
   useEffect( () => {
-
-      console.log("PORT:", process.env.REACT_APP_PORT);
+    
       fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
@@ -51,39 +44,65 @@ function App() {
         return res.json();
       })
       .then( (data) => {
+        window.localStorage.setItem( "access_token",data.access_token);
         setAccessToken(data.access_token);
         console.log(access_token);
       })
 
       
-      let artsitIds = "";
+      
+  }, []);
 
-      for (let i = 0;i < ids.length;i++) {
-        if (i !== ids.length - 1) 
-          artsitIds += ids[i] + '%2C';
-        else 
-          artsitIds += ids[i];
-      }
+  useEffect ( () => {
+
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("user_token");
+
+    if (!token && hash) {
+
+      const urlParam = new URLSearchParams(window.location.hash.replace('#','?'));
+      const token = urlParam.get('access_token');
+      console.log(token);
+
+      window.location.hash = "";
+      window.localStorage.setItem("user_token", token);
+    }
 
 
-      fetch(`https://api.spotify.com/v1/artists?ids=${artsitIds}`, {
+    fetch('https://api.spotify.com/v1/me/playlists', {
         method: 'GET',
         headers: {
-          'Authorization' : `Bearer ${access_token}`,
-
-        },
+          'Authorization' : `Bearer ${token}`,
+        }
       })
-
-
       .then( (res) => {
         if (!res.ok) {
-          throw new Error(res.status);
+          throw new Error("Can't fetch user details");
         }
         return res.json();
       })
-      .then( (data) => {
-        setLibraryData(data);
-        console.log(libraryData);
+      .then ( (data) => {
+        console.log(data);
+      })
+      .catch( (e) => {
+        console.log(e.message);
+      })
+
+      fetch('https://api.spotify.com/v1/me/albums', {
+        method: 'GET',
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+        }
+      })
+      .then( (res) => {
+        if (!res.ok) {
+          throw new Error("Can't fetch user albums details");
+        }
+
+        return res.json();
+      })
+      .then ( (data) => {
+        console.log(data);
       })
       .catch( (e) => {
         console.log(e.message);
@@ -92,111 +111,16 @@ function App() {
   }, []);
 
 
- 
 
   return (
     <BrowserRouter>
-    <div className="Main">
-      <div className=" flex flex-col p-2 gap-4 transition-all xl:flex "
-      style={{
-        display: sideBarActive ? "none" : "flex",
-      }}>
-        <div className=" p-4 flex flex-col gap-4 bg-stone-950 w-16 rounded-md items-center">
-          <Link to="/" className = " links"><HomeIcon /></Link>
-          <Link to="/search" className = " links"><SearchIcon /></Link>
-        </div>
-        
-        <div className=" flex flex-col p-2 gap-4 bg-stone-950 w-16 rounded-md items-center overflow-y-auto">
-          <div
-          onClick={() => {
-            setSideBarStatus(prev => !prev);
-          }}>
-            <LibraryIcon className=" mb-2"/>
-          </div>          
-          {libraryData && libraryData.artists.map( (eachArtist, index) => (
-            <Link className=" links" to ={`/artist/${eachArtist.id}`}>
-              <div 
-              className=""
-              key={index}>
-              <img 
-              src={eachArtist.images[2].url}
-              className=" w-16 h-12 rounded-full" ></img>
-            </div></Link>
-          ))}
-        </div>
-      </div>
-      <div className="left-nav-container"
-      style={{
-        display: sideBarActive ? "block" : "none",
-      }} >
-        <div className="left-top-container flex-col p-4">
-          <Link to="/">
-          <div className=" flex gap-5">
-          <HomeIcon />
-          
-          <span>Home</span>
-          </div>
-          </Link>
-          <div className=" flex gap-5 mt-3">
-          <SearchIcon />
-          <Link to = "/search"><span>Search</span></Link>
-
-          </div>
-        </div>
-        
-        <div className="library-container">
-          <div className="library-menu-container p-4 flex justify-between gap-2">
-            <div className="icon flex  gap-4" 
-            onClick={() => {
-              setSideBarStatus(prev => !prev);
-            }}>
-              {/* <ExpandIcon /> */}
-              <LibraryIcon />
-            <span className=" whitespace-nowrap">Your Library</span>
-            </div>
-            <div className="library-options">
-              <PlusIcon />
-            </div>
-          </div>
-          <div className="artist-playlist-container">
-            <div className="library-tools-container flex justify-between">
-              <SearchIcon />
-              <div className=" flex gap-2">
-              <span>Tools</span>
-              <LibraryIcon />
-              </div>
-            </div>
-              { <div className="library-list">
-              {libraryData && libraryData.artists.map( (eachData) => (
-
-                  <Link
-                  onClick = {() => {
-                    setArtist(eachData);
-                  }}
-                  to={`/artist/${eachData.id}`}><div 
-                  className="list"
-                  >
-                    <div className="artist-photo" >
-                      <img src={eachData.images[2].url} 
-                      style={ {
-                        borderRadius: '8px',
-                      }} alt="artist-view"></img>
-                      </div>
-                    <div className="list-details">
-                      <h5>{eachData.name}</h5>
-                      <span>{(eachData.type).charAt(0).toUpperCase() + (eachData.type).slice(1)}</span>
-                    </div>
-                  </div>
-                  </Link>
-              ))}
-              </div>}
-          </div>
-        </div>
-      </div>
+    <main className=" flex absolute left-0 top-0 w-full h-full overflow-hidden ">
+      <LibrarySection  />
+      <SlideLibrary showLibrary={showLibrary} />
 
       <div className="right-container relative">
       <div className="top-section w-full absolute p-3 flex justify-between items-center z-10 ">
-          <TopNav isSearchBarActive= {isSearchBarActive}/>
+          <TopNav setShowLibrary={setShowLibrary}/>
           <div className="flex gap-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokelinecap="round" strokeLinejoin="round" className="lucide lucide-bell">
                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
@@ -213,14 +137,13 @@ function App() {
                 <circle cx="12" cy="10" r="4"/>
                 <circle cx="12" cy="12" r="10"/>
               </svg>
-            
           </div>
-          
-          
-
     </div>
         <div className="sections">
           <Switch>
+            <Route path="/login">
+              <LoginSection />
+            </Route>
             <Route path = "/artist/:artistId" >
                <DisplayArtist access_token = {access_token}/>
             </Route>
@@ -245,7 +168,7 @@ function App() {
           </Switch>
         </div>
       </div>
-    </div>
+    </main>
    </BrowserRouter>
   );
 }

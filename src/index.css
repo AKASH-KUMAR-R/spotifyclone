@@ -9,16 +9,6 @@ body {
   background-color: black;
 }
 
-.Main {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  overflow:hidden;
-}   
-
 .left-nav-container {
   min-width: 200px;
   width: 18%;
@@ -29,11 +19,8 @@ body {
 }
 
 /*rgb(30, 29, 29)*/
-.left-top-container {
-  width: 100%;
-  height: 12%;
+.left-top-container-color {
   background-color: rgb(17, 16, 16);
-  border-radius: 4%;
 }
 
 .library-container {
@@ -263,8 +250,6 @@ body {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
-.artist-details {  
-}
 
 .artist-followers {
   font-size: 20px;
@@ -460,6 +445,21 @@ input:active {
   display: grid;
   grid-template-columns: 6rem 75%;
 }
+
+.spotify-green {
+  /* color: rgb(69, 122, 69); */
+  color: #1DB954;
+}
+
+.slide-effect {
+  transition: left 0.3s ease-in-out;
+
+}
+
+.spotify-component-bg-color {
+  background-color: rgba(38, 37, 37, 0.778);
+}
+
 @media screen and (max-width: 800px) {
   .album-name {
     display: none;
