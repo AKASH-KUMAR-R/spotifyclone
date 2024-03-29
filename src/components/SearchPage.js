@@ -168,7 +168,6 @@ const SearchBar = (props) => {
           {!searchResult && <div className=" w-full  flex justify-center items-center ">
 
             <span className=" text-2xl mt-20">Search Not Founded</span>
-
           </div>}
          {searchResult && (selectedButton === "all" || selectedButton === "track") && searchResult.tracks && <div className="song-list">
                 <div className="heading-section">
