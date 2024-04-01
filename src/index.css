@@ -451,6 +451,10 @@ input:active {
   color: #1DB954;
 }
 
+.spotify-green-bg-color{
+  background-color: #1DB954;
+}
+
 .slide-effect {
   transition: left 0.3s ease-in-out;
 
@@ -460,6 +464,9 @@ input:active {
   background-color: rgba(38, 37, 37, 0.778);
 }
 
+.box-shadow-bottom {
+  box-shadow: 0px 2px 8px rgba(0,0,0);
+}
 @media screen and (max-width: 800px) {
   .album-name {
     display: none;
