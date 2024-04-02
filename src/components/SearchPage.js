@@ -50,6 +50,7 @@ const SearchBar = (props) => {
       })
     }, [searchQuery, searchType, encodedQuery, props.access_token]);
 
+
     const getDuration = (duration) => {
       const seconds = (( duration % 60000) / 1000).toFixed(0);
 
@@ -179,8 +180,11 @@ const SearchBar = (props) => {
               {searchResult.tracks.items.map( (eachSong, index) => (
                 <div 
                 className="each-song-details"
+                key={index + " " + eachSong.id}
                 >
-                  <div className="id">{index + 1}</div>
+                  <div className="id">
+                    {eachSong.album.images && <img src={eachSong.album.images[0].url} width={40} alt="cover-page"></img>}
+                  </div>
                   <div className="title">{eachSong.name}</div>
                   <div className="album-name">{eachSong.artists[0].name}</div>
                   <div className="duration">{getDuration(eachSong.duration_ms)}</div>

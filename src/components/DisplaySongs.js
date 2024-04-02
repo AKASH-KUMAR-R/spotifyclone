@@ -74,7 +74,7 @@ export const DisplaySong = ({user, playlistId, setAddStatus}) => {
                     {recTracl && recTracl.items.map( (eachItem, index) => (
                         <div className=" w-full grid grid-cols-3  " key={index + "" + eachItem.track.id}>
                             <div>
-                                <img src={eachItem.track.album.images[0].url} width={40} className=" rounded-md"></img>
+                                <img src={eachItem.track.album.images[0].url} width={40}></img>
                             </div>
                             <div className=" w-full flex flex-col text-twoline-wrap ">
                                 <div><span className=" text-sm">{eachItem.track.name}</span></div>

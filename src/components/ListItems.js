@@ -23,8 +23,11 @@ const ListItems = (props) => {
                     </div>
                     <div className="albums h-60 sm:h-72">
                         <div className="sections flex items-center">
-                            {(props.listHeadingText === "New Releases" || props.listHeadingText === "Albums" || props.listHeadingText === "Artists") && data && data.map( (eachItem) => (
-                                <Link to={props.listHeadingText === "Artists" ?  `/artist/${eachItem.id}` : `/album/${eachItem.id}`} className= "links">
+                            {(props.listHeadingText === "New Releases" || props.listHeadingText === "Albums" || props.listHeadingText === "Artists") && data && data.map( (eachItem, index) => (
+                                <Link 
+                                to={props.listHeadingText === "Artists" ?  `/artist/${eachItem.id}` : `/album/${eachItem.id}`} 
+                                className= "links"
+                                key={index + " " + eachItem.id}>
                                     <div className="album w-40 h-52 sm:w-48 sm:h-64">
                                     <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
                                         {eachItem.images[0] && <img src={eachItem.images[0].url} style = { {

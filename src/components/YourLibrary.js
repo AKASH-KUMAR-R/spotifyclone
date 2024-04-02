@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoadingIcon, MusicIcon, PlusIcon, SearchIcon, UserIcon } from "./Icons/Icons";
+import { MusicIcon, PlusIcon, SearchIcon, UserIcon } from "./Icons/Icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { CreatePlaylist } from "./CreatePlaylist";
 
@@ -104,6 +104,7 @@ export const YourLibrary = () => {
                         <span onClick={() => {setCreateStatus(true)}}><PlusIcon /></span>
                     </div>
                 </header>
+
             {playlist && <section className=" p-2 w-full flex flex-col gap-2 ">
                 {playlist.items.map((eachItem, index) => (
                     <Link to={`/playlist/${eachItem.id}`} ><div 
@@ -124,6 +125,7 @@ export const YourLibrary = () => {
                     </Link>
                 ))}
             </section>}
+
             {album && <section className=" w-full flex flex-col p-2 gap-2">
                 {album.items.map((eachItem, index) => (
                     <Link to={`/album/${eachItem.album.id}`} ><div 

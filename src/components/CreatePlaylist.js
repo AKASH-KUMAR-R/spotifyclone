@@ -61,7 +61,7 @@ export const CreatePlaylist = ({ user, createStatus, setCreateStatus}) => {
     return (
         <main className=" w-full h-full flex justify-center items-center absolute z-10 backdrop-blur-sm  "
             style={{
-                display: createStatus? "flex": "none",
+                display: createStatus ? "flex": "none",
             }}>
                 {status.pending && <LoadingIcon className=" absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-20" />}
                 <section className="spotify-component-bg-color relative  w-11/12 flex flex-col items-center justify-center p-2  gap-3  rounded-lg ">   

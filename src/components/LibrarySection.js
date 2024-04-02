@@ -41,7 +41,6 @@ export const LibrarySection = () => {
       })
       .then( (data) => {
         setLibraryData(data);
-        console.log(libraryData);
       })
       .catch( (e) => {
         console.log(e.message);
@@ -56,8 +55,8 @@ export const LibrarySection = () => {
             display: sideBarActive ? "none" : "flex",
         }}>
             <div className=" p-4 flex flex-col gap-4 bg-stone-950 w-16 rounded-md items-center">
-            <Link to="/" className = " links"><HomeIcon /></Link>
-            <Link to="/search" className = " links"><SearchIcon /></Link>
+              <Link to="/" className = " links"><HomeIcon /></Link>
+              <Link to="/search" className = " links"><SearchIcon /></Link>
             </div>
             
             <div className=" flex flex-col p-2 gap-4 bg-stone-950 w-16 rounded-md items-center overflow-y-auto">
@@ -70,8 +69,7 @@ export const LibrarySection = () => {
             {libraryData && libraryData.artists.map( (eachArtist, index) => (
                 <Link className=" links" to ={`/artist/${eachArtist.id}`}>
                 <div 
-                className=""
-                key={index}>
+                key={index + " " + eachArtist.id}>
                 <img 
                 src={eachArtist.images[2].url}
                 className=" w-16 h-12 rounded-full" ></img>
