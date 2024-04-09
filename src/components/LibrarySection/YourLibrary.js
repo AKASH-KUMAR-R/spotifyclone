@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MusicIcon, PlusIcon, SearchIcon, UserIcon } from "./Icons/Icons";
+import { MusicIcon, PlusIcon, SearchIcon, UserIcon } from "../Icons/Icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { CreatePlaylist } from "./CreatePlaylist";
 

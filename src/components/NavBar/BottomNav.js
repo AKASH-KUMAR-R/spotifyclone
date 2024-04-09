@@ -1,4 +1,4 @@
-import { ExpandIcon, HomeIcon, LibraryIcon, SearchIcon } from "./Icons/Icons";
+import { ExpandIcon, HomeIcon, LibraryIcon, SearchIcon } from "../Icons/Icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 export const BottomNav = () => {

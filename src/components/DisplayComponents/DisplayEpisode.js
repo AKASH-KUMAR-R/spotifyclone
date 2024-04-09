@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import ExtractColorFromImage from "./ExtractColorFromImage";
+import ExtractColorFromImage from "../ExtractColorFromImage";
+import { MusicIcon } from "../Icons/Icons";
 
 const DisplayEpisode = (props) => {
 
@@ -64,14 +65,14 @@ const DisplayEpisode = (props) => {
     }
 
     return (
-        <div className=" w-full h-full">
-            { episodeData && <div className="artist-image" style={ {
+        <div className=" w-full h-full mt-10">
+            { episodeData && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row" style={ {
                 backgroundColor: `${color}`,
                 backdropFilter: `blur(10px)`,
             }}>
                 <ExtractColorFromImage imageUrl={episodeData.images[0].url} setColor={setColor}/>
-                    <img src={episodeData.images[0].url} width="100%" height="20%" alt="episode view"></img>
-                    <div className="artist-details">
+                {episodeData.images.length > 0  ? <img src={episodeData.images[0].url} className = " w-40 h-40 sm:w-52 sm:h-52 rounded-lg" alt="playlist-view"></img> : <MusicIcon />}
+                    <div className="artist-details w-full items-center sm:items-start sm:ml-6 flex flex-col overflow-hidden mt-1">
                         <span className="artist-name overflow-hidden whitespace-nowrap text-ellipsis">{episodeData.name}</span>
                         <span className="artist-followers">Podcast Episode
                         <span style={{fontWeight: 'bolder', fontSize: '30px', marginLeft : '4px', marginRight : '4px'}}>.</span>

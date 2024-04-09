@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import TopNav from "./components/TopNav";
-import DisplayArtist from "./components/DisplayArtist";
+import TopNav from "./components/NavBar/TopNav";
+import DisplayArtist from "./components/DisplayComponents/DisplayArtist";
 import { BrowserRouter, Switch , Route} from "react-router-dom";
 
-import DisplayAlbum from "./components/DisplayAlbum";
-import HomePage from "./components/HomePage";
-import DisplayPlaylist from "./components/DisplayPlaylist";
-import DisplayShow from "./components/DisplayShow";
-import DisplayEpisode from "./components/DisplayEpisode";
-import SearchBar from "./components/SearchPage";
+import DisplayAlbum from "./components/DisplayComponents/DisplayAlbum";
+import HomePage from "./components/HomeSection/HomePage";
+import DisplayPlaylist from "./components/DisplayComponents/DisplayPlaylist";
+import DisplayShow from "./components/DisplayComponents/DisplayShow";
+import DisplayEpisode from "./components/DisplayComponents/DisplayEpisode";
+import SearchBar from "./components/HomeSection/SearchPage";
 import { LoginSection } from "./components/LoginSection";
-
-import { LibrarySection } from "./components/LibrarySection";
-import { SlideLibrary } from "./components/SlideLibrary";
-import { BottomNav } from "./components/BottomNav";
-import { YourLibrary } from "./components/YourLibrary";
-
+import { LibrarySection } from "./components/LibrarySection/LibrarySection";
+import { SlideLibrary } from "./components/LibrarySection/SlideLibrary";
+import { BottomNav } from "./components/NavBar/BottomNav";
+import { YourLibrary } from "./components/LibrarySection/YourLibrary";
+import { CollectionSongs } from "./components/LibrarySection/CollectionSongs";
 
 
 function App() {
@@ -113,7 +112,6 @@ function App() {
   }, []);
 
 
-
   return (
     <BrowserRouter>
     <main className=" flex absolute left-0 top-0 w-full h-full overflow-hidden ">
@@ -121,8 +119,8 @@ function App() {
       <SlideLibrary showLibrary={showLibrary} />
 
       <div className="right-container relative">
-      <TopNav setShowLibrary={setShowLibrary} />
-      <BottomNav />
+        <TopNav setShowLibrary={setShowLibrary} />
+        <BottomNav />
         <div className="sections">
           <Switch>
             <Route path="/login">
@@ -148,6 +146,9 @@ function App() {
             </Route>
             <Route path="/library">
               <YourLibrary />
+            </Route>
+            <Route path="/collection/tracks">
+              <CollectionSongs />
             </Route>
             <Route path="/">
               {access_token && <HomePage access_token = {access_token}/>}

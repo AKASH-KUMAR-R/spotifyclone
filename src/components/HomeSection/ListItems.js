@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect, useState } from "react";
-import  { PlayButtonIcon } from "./Icons/Icons";
+import  { PlayButtonIcon } from "../Icons/Icons";
 
 
 const ListItems = (props) => {
@@ -31,7 +31,7 @@ const ListItems = (props) => {
                                     <div className="album w-40 h-52 sm:w-48 sm:h-64">
                                     <div className="album-image relative w-32 h-32 sm:w-40 sm:h-40">
                                         {eachItem.images[0] && <img src={eachItem.images[0].url} style = { {
-                                            borderRadius : props.listHeadingText === "Artists" ? "100%" : "8px",
+                                            borderRadius : props.listHeadingText === "Artists" ? "9999px" : "8px",
                                         }} alt="cover-page"></img>}
                                         <div className="play-button absolute top-28 left-24 opacity-0 hidden xl:block" onClick={ () => {
                                             handleSong();

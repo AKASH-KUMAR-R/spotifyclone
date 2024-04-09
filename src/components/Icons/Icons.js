@@ -57,7 +57,7 @@ export const ExpandIcon = ({className}) => {
 export const PlusIcon = ({className}) => {
 
     return(
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" strokeWidth="1" className="w-6 h-6">
             <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
         </svg>
     );
@@ -101,10 +101,10 @@ export const UserIcon = ({ className}) => {
     );
 }
 
-export const MusicIcon = ({className}) => {
+export const MusicIcon = ({className, width, height}) => {
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-music">
+        <svg xmlns="http://www.w3.org/2000/svg" width={width ? width : "60"} height={height ? height : "60"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-music">
             <path d="M9 18V5l12-2v13"/>
             <circle cx="6" cy="18" r="3"/>
             <circle cx="18" cy="16" r="3"/>

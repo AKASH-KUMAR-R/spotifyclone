@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import useFetch from "./useFetch";
-import ExtractColorFromImage from "./ExtractColorFromImage";
+import useFetch from "../useFetch";
+import ExtractColorFromImage from "../ExtractColorFromImage";
 
 const DisplayShow = (props) => {
 
@@ -71,7 +71,7 @@ const DisplayShow = (props) => {
             {data && <div className=" w-full flex flex-col p-2 sm:p-6">
                 {data.episodes.items.map( (eachEpisode, index) => (
                     <div className=" grid-layout-2-2 w-full sm:w-10/12 sm:h-58 gap-4 border-t-2 border-t-white overflow-hidden"
-                    key={index}>
+                    key={eachEpisode.id + "" +  index }>
 
                         <div className=" h-24 mt-3">
                             <img
