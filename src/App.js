@@ -15,7 +15,7 @@ import { LibrarySection } from "./components/LibrarySection";
 import { SlideLibrary } from "./components/SlideLibrary";
 import { BottomNav } from "./components/BottomNav";
 import { YourLibrary } from "./components/YourLibrary";
-
+import { CollectionSongs } from "./components/CollectionSongs";
 
 
 function App() {
@@ -113,7 +113,6 @@ function App() {
   }, []);
 
 
-
   return (
     <BrowserRouter>
     <main className=" flex absolute left-0 top-0 w-full h-full overflow-hidden ">
@@ -121,8 +120,8 @@ function App() {
       <SlideLibrary showLibrary={showLibrary} />
 
       <div className="right-container relative">
-      <TopNav setShowLibrary={setShowLibrary} />
-      <BottomNav />
+        <TopNav setShowLibrary={setShowLibrary} />
+        <BottomNav />
         <div className="sections">
           <Switch>
             <Route path="/login">
@@ -148,6 +147,9 @@ function App() {
             </Route>
             <Route path="/library">
               <YourLibrary />
+            </Route>
+            <Route path="/collection/tracks">
+              <CollectionSongs />
             </Route>
             <Route path="/">
               {access_token && <HomePage access_token = {access_token}/>}

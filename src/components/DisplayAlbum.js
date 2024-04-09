@@ -28,7 +28,7 @@ const DisplayAlbum = (props) => {
         .catch ( (e) => {
             console.log(e.message);
         })
-    }, [albumId]);
+    }, [albumId, props.access_token]);
 
     const getDuration = (duration) => {
         const seconds = (( duration % 60000) / 1000).toFixed(0);

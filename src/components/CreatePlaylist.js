@@ -64,8 +64,8 @@ export const CreatePlaylist = ({ user, createStatus, setCreateStatus}) => {
                 display: createStatus ? "flex": "none",
             }}>
                 {status.pending && <LoadingIcon className=" absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-20" />}
-                <section className="spotify-component-bg-color relative  w-11/12 flex flex-col items-center justify-center p-2  gap-3  rounded-lg ">   
-                    <span className=" absolute left-2 top-2" onClick={() => {setCreateStatus(false)}}><CloseIcon /></span>
+                <section className="spotify-component-bg-color relative sm:w-5/12 flex flex-col items-center justify-center p-2  gap-3  rounded-lg ">   
+                    <span className=" absolute left-2 top-2 cursor-pointer" onClick={() => {setCreateStatus(false)}}><CloseIcon /></span>
                         <h1 className=" text-xl font-bold">New Playlist</h1>
                         <input 
                         type="text" 

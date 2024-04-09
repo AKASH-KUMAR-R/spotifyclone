@@ -68,18 +68,6 @@ body {
 .list:hover {
   background-color: rgb(47, 46, 46);
 }
-.list-details {
-  margin-left: 10px;
-}
-
-.list-details h5 {
-  font-weight: 600;
-}
-
-.list-details span {
-  font-style: normal;
-  color: rgba(255, 255, 255, 0.571);
-}
 
 .artist-photo {
   width: 40px;
@@ -103,7 +91,7 @@ body {
 .sections {
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .temp-section {
@@ -199,7 +187,7 @@ body {
   height: 60px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.421);
   display: grid;
-  column-gap: 10px;
+  column-gap: 10px; 
   grid-template-columns: 1fr 3fr 3fr 3fr;
   align-items: center;
   margin: 8px;
@@ -418,7 +406,8 @@ input:active {
   background-color: white;
   transition: opacity 0.3s ease;
   border-radius: 12px;
-  width: 60px;
+  min-width: 60px;
+  
   height: 26px;
   color: black;
 }

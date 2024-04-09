@@ -1,9 +1,9 @@
 
 export const LoginSection =  () => {
 
-    const redirectUrl = "http://192.168.1.7:3000";
+    const redirectUrl = "http://192.168.1.38:3000/";
     const clientId = process.env.REACT_APP_SPOTIFY_WEB_CLIENT_ID;
-    const scope = "user-read-private user-read-email playlist-read-private user-library-read user-follow-read playlist-modify-public playlist-modify-private user-read-recently-played user-library-modify";
+    const scope = "user-read-private user-read-email playlist-read-private user-library-read user-follow-read playlist-modify-public playlist-modify-private user-read-recently-played user-library-modify user-follow-modify";
 
     const authUrl = new URL("https://accounts.spotify.com/authorize");
     const params =  {

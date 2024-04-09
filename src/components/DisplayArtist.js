@@ -11,9 +11,12 @@ const DisplayArtist = (props) => {
     const { artistId } = useParams();
 
     const [relatedArtist, setRelatedArtist] = useState(null);
+    const [followStatus, setFollowStatus] = useState(false);
     const [color, setColor] = useState(null);
 
+    const user_token = window.localStorage.getItem("user_token");
     useEffect( () => {
+        /*Artist album details */
         fetch (`https://api.spotify.com/v1/artists/${artistId}/albums`, {
             method: 'GET',
             headers: {
@@ -35,6 +38,7 @@ const DisplayArtist = (props) => {
             console.log(e.message);
         })
 
+        /*Artist details */
         fetch (`https://api.spotify.com/v1/artists/${artistId}`, {
         method: 'GET',
         headers: {
@@ -57,6 +61,7 @@ const DisplayArtist = (props) => {
         console.log(e.message);
       })
 
+      /*Related artist details */
       fetch (`https://api.spotify.com/v1/artists/${artistId}/related-artists`, {
         method : 'GET',
         headers : {
@@ -77,10 +82,53 @@ const DisplayArtist = (props) => {
         console.log(e.messaage);
       })
 
+      fetch (`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${artistId}`, {
+        method : 'GET',
+        headers : {
+            'Authorization' : `Bearer ${user_token}`,
+        }
+      })
+      .then ( (res) => {
+        if (!res.ok) {
+            throw new Error("Can.t fetch related artists");
+        }
+        console.log("fetched related artist");
+        return res.json();
+      })
+      .then ( (data) => {
+        setFollowStatus(data[0]);
+        console.log(data[0]);
+      })
+      .catch( (e) => {
+        console.log(e.messaage);
+      })
+
     }, [artistId]);
 
+    const ModifyFollowStatus = () => {
+
+        fetch(`https://api.spotify.com/v1/me/following?type=artist&ids=${artistId}`, {
+            method : followStatus ? 'DELETE' : 'PUT',
+            headers : {
+                'Authorization' : `Bearer ${user_token}`,
+            }
+        })
+        .then ( (res) => {
+            if (!res.ok) {
+                throw new Error("Can.t modify follow status ");
+            }
+            console.log("modified follow status");
+            setFollowStatus(prev => !prev);
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        })
+
+          
+    }
+
     return (
-        <div className="temp-section mt-10">
+        <div className="temp-section mt-10 flex flex-col gap-4">
             { artistData && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row">
                 <img src={artistData.images[0].url} className=" w-40 h-40 sm:w-52 sm:h-52 rounded-lg"></img>
                 <div className="artist-details w-full items-center sm:ml-6 flex flex-col overflow-hidden whitespace-nowrap mt-1">
@@ -88,74 +136,22 @@ const DisplayArtist = (props) => {
                     <span className="artist-followers">Followers : {(artistData.followers.total).toLocaleString()}</span>
                 </div>
             </div>}
+            <div className=" w-full ">
+            <div className=" flex h-12 p-4">
+                    <button className=" w-20 p-2 h-8 border border-white rounded-md font-semibold text-xs button-ani" 
+                    style={{
+                        borderColor: followStatus ? "rgb(256, 256, 256)" : "rgb(256, 256, 256 , 0.4)",
+                    }} 
+                    onClick={() => {ModifyFollowStatus()}}>
+                        <span>{followStatus ? "Following" : "Follow"}</span>
+                    </button>
+                </div>
+            </div>
             <div className="album-section p-4">
 
                 {artistAlbumDetails && <ListItems data = {artistAlbumDetails.items} listHeadingText = "Albums"/>}
                 {relatedArtist && <ListItems data = {relatedArtist.artists} listHeadingText = "Artists" />}
-                {/* <div className="for-design"></div>
-                <div className="popular-section">
-                    <div className="album-top-section"><span className="heading-text">Popular</span></div>
-                    <PopularTrack  access_token = {props.access_token}/>
-                </div>
-                <div className="album-list">
-                    <div className="album-top-section">
-                        <div><span>Discography</span></div>
-                        <div>Show all</div>
-                    </div>
-                    <div className="albums">
-                    <div className="sections" style={ {
-                        display: "flex",
-                        alignItems: 'center',
-
-                    }}>
-                        {artistAlbumDetails && artistAlbumDetails.items.map( (eachItem) => (
-                            <Link to = {`/album/${eachItem.id}`} className = "links"><div className="album">
-                                <div className="album-image">
-                                    <img src={eachItem.images[0].url}></img>
-                                </div>
-                                <div className="album-details">
-                                    <div><span>{eachItem.name}</span></div>
-                                    <div><span>{(eachItem.release_date).substring(0, 4)}</span><span style={{fontWeight: 'bolder', fontSize: '20px'}}>.</span>{eachItem.album_group}</div>
-                                </div>
-                            </div>
-                            </Link>
-
-                        ))}
-                        </div>
-
-                    </div>
-
-                    <div className="album-top-section">
-                        <div><span>Fans Also Likes</span></div>
-                        <div>Show all</div>
-                    </div>
-                    <div className="albums">
-                    <div className="sections" style={ {
-                        display: "flex",
-                        alignItems: 'center',
-
-                    }}>
-                        {relatedArtist && relatedArtist.artists.map( (eachItem) => (
-                            <Link to={`/artist/${eachItem.id}`} className= "links"><div className="album">
-                                <div className="album-image">
-                                    <img src={eachItem.images[1].url} style = { {
-                                        borderRadius : "50%",
-                                        width : "400px",
-                                        height : "160px"
-                                    }}></img>
-                                </div>
-                                <div className="album-details">
-                                    <div><span>{eachItem.name}</span></div>
-                                    <div><span>{(eachItem.type).charAt(0).toUpperCase() + (eachItem.type).slice(1)}</span></div>
-                                </div>
-                            </div>
-                            </Link>
-
-                        ))}
-                        </div>
-
-                    </div>
-                </div> */}
+                
                 
             </div>
         </div>

@@ -5,6 +5,7 @@ import { MoreIcon } from "./Icons/MoreIcon";
 import { DisplaySong } from "./DisplaySongs";
 import {RemoveIcon} from './Icons/RemoveIcon';
 import { ChoosePlaylist } from "./ChoosePlaylist";
+import { PopUpMessage } from "../Animation/PopUpMessage";
 
 const DisplayPlaylist = (props) => {
 
@@ -14,13 +15,21 @@ const DisplayPlaylist = (props) => {
 
     const [addStatus, setAddStatus] = useState(false);
     const [displayOption , setDisplayOption] = useState(false);
+    const [songUri, setSongUri] = useState(null);
     const [songId, setSongId] = useState(null);
 
     const [confirmStatus, setConfirmStatus] = useState(false);
+    const [userFollow, setUserFollow] = useState(false);
+    const [showPop, setShowPop] = useState(false);
+    
 
+    const [showDeletePopMessage, setShowDeletePopMessage] = useState(false); 
+    const user_token = window.localStorage.getItem("user_token");
+
+    let intervalId;
     useEffect( () => {
-        const user_token = window.localStorage.getItem("user_token");
-
+        
+        /*Fetching the user details*/
         fetch('https://api.spotify.com/v1/me', {
             method: 'GET',
             headers: {
@@ -43,6 +52,7 @@ const DisplayPlaylist = (props) => {
             console.log(e.message);
         })
 
+        /*Fetching the playlist details*/
         fetch (`https://api.spotify.com/v1/playlists/${playlistId}`, {
             method : 'GET',
             headers : {
@@ -63,6 +73,29 @@ const DisplayPlaylist = (props) => {
             console.log(e.message);
         })
 
+        /*For getting the user playlist follow status*/
+        fetch(`https://api.spotify.com/v1/playlists/${playlistId}/followers/contains?ids=${user.id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization' : `Bearer ${user_token}`,
+            }
+        })
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error("Can't get follow status");
+            }
+            console.log("follow status got");
+            return res.json();
+        })
+        .then( (data) => {
+            setUserFollow(data[0]);
+            console.log(data[0]);
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        })
+
+
     }, [playlistId, props.access_token]);
 
     const getDuration = (duration) => {
@@ -75,14 +108,106 @@ const DisplayPlaylist = (props) => {
 
     }
 
-    const deteleLibraryItem = (deleteId, type) => {
+    const deteleLibraryItem = () => {
 
+        fetch (`https://api.spotify.com/v1/playlists/${playlistId}/followers`,{
+            method: 'DELETE',
+            headers: {
+                'Authorization' :  `Bearer ${user_token}`
+            }
+        })
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error("Can't delete playlist");
+            }
+            console.log("Playlist deleted");
+
+            setShowPop(true);
+            clearInterval(intervalId);
+            intervalId = setInterval( () => {
+                setShowPop(false);
+                clearInterval(intervalId);
+            }, 3000);
+            
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        })
         
+        return () => {
+            clearInterval(intervalId);
+        }
+    };
+
+    const setTimeSlice = () => {
+
+        setShowDeletePopMessage(true); /*For temporarily showing a success message*/
+            intervalId = setTimeout( () => {
+                setShowDeletePopMessage(false);
+                clearInterval(intervalId);
+            }, 3000);
+
     }
+
+    const removeTrack = (trackId, trackIndex) => {
+
+        setPlaylistDetails(prev => {
+            const newItems = [...prev.tracks.items.slice(0, trackIndex), ...prev.tracks.items.slice(trackIndex + 1)];
+            return{
+                ...prev,
+                tracks: {
+                    ...prev.tracks,
+                    items: newItems
+                }
+            }
+
+        })
+        fetch(`https://api.spotify.com/v1/me/tracks?ids=${trackId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization' : `Bearer ${user_token}`
+            }
+        })
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error("Can't delete data");
+            }
+            setTimeSlice();
+            console.log("song deleted");
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        })
+    }
+
+    const ModifyFollowStatus = () =>  {
+
+        fetch (`https://api.spotify.com/v1/playlists/${playlistId}/followers`, {
+            method: userFollow ? "DELETE" : "PUT",
+            headers: {
+                'Authorization' : `Bearer ${user_token}`,
+            }
+        })
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error("Can't edit follow status");
+            }
+            setUserFollow(prev => !prev);
+            console.log("Follow status edited");
+
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        })
+
+    }
+
 
     return (
         <div className=" w-full h-full mt-10 relative">
             
+            <PopUpMessage display={showPop} message="Playlist removed" />
+            <PopUpMessage display={showDeletePopMessage} message="song deleted" />
             {confirmStatus && <div className=" absolute flex justify-center items-center z-10 w-full h-full top-0 backdrop-blur-sm">
                 <div className=" w-8/12 h-1/5 flex flex-col items-center justify-center gap-4 spotify-component-bg-color ">
                     <h1 className=" text-center text-sm ">Do you want to delete "{playlistDetails.name}" ? </h1>
@@ -91,7 +216,8 @@ const DisplayPlaylist = (props) => {
                             setConfirmStatus(false);
                         }}>Cancel</button>
                         <button className=" w-20 h-8 rounded-lg spotify-green-bg-color text-xs" onClick={() => {
-                            deteleLibraryItem(playlistDetails.id, "playlist");
+                            deteleLibraryItem();
+                            setConfirmStatus(false);
                         }}>Delete</button>
                     </div>
                 </div>
@@ -108,10 +234,10 @@ const DisplayPlaylist = (props) => {
                     </div>
                 </div>}
             
-            {user && displayOption && <ChoosePlaylist songId={songId} userId={user.id} setDisplayOption={setDisplayOption} />}
+            {displayOption && user && <ChoosePlaylist songUri={songUri} songId={songId} userId={user.id} setDisplayOption={setDisplayOption} />}
             {addStatus && <DisplaySong user={user} playlistId={playlistId} setAddStatus={setAddStatus}/>}
-            {playlistDetails && (playlistDetails.owner.id === user.id) && <div className=" flex  w-full h-12 p-4 ">
-                <div className=" flex items-center gap-4 opacity-60">
+            {playlistDetails && <div className=" flex  w-full h-12 p-4 ">
+                {(playlistDetails.owner.id === user.id) && <div className=" flex items-center gap-4 opacity-60">
                     <span onClick={() => {
                         setAddStatus(true);
                     }}><PlusIcon /></span>
@@ -119,7 +245,18 @@ const DisplayPlaylist = (props) => {
                     {(playlistDetails.owner.id === user.id ) && <span onClick={() => {
                         setConfirmStatus(true);
                     }}><RemoveIcon /></span>}
-                </div>
+                </div>}
+
+
+                {playlistDetails.owner.id !== user.id && <div className=" flex h-12 p-4">
+                    <button className=" w-20 p-2 h-8 border border-white rounded-md font-semibold text-xs button-ani" 
+                    style={{
+                        borderColor: userFollow ? "rgb(256, 256, 256)" : "rgb(256, 256, 256 , 0.4)",
+                    }} 
+                    onClick={() => {ModifyFollowStatus()}}>
+                        <span>{userFollow ? "Following" : "Follow"}</span>
+                    </button>
+                </div>}
             </div>}
             
                 
@@ -137,7 +274,7 @@ const DisplayPlaylist = (props) => {
                 className="each-song-details" tabIndex={index}
                 >
                   <div className="id">
-                    <img src={eachSong.track.album.images[0].url} loading="lazy" width={40}></img>
+                    <img src={eachSong.track.album.images[0].url} alt="cover-page" loading="lazy" width={40}></img>
                   </div>
                   <div className="title flex flex-col">
                     <div className=" whitespace-nowrap text-ellipsis overflow-hidden">{eachSong.track.name}</div>
@@ -147,9 +284,14 @@ const DisplayPlaylist = (props) => {
                   <div className="duration flex gap-6">{getDuration(eachSong.track.duration_ms)}
                     <div className=" flex items-center justify-center gap-2">
                         <span onClick={() => {
-                            setSongId(eachSong.track.uri);
+                            setSongUri(eachSong.track.uri);
+                            setSongId(eachSong.track.id)
                             setDisplayOption(true);
                         }}><PlusIcon /></span>
+                        <span
+                        onClick={() => {
+                            removeTrack(eachSong.track.id, index);
+                        }}><RemoveIcon /></span>
                     </div>
                   </div>
                 </div>

@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import { CloseIcon, MusicIcon, PlusIcon } from "./Icons/Icons";
+import { PopUpMessage } from "../Animation/PopUpMessage";
+import image from "./LikedSongCoverPage.png";
 
-
-export const ChoosePlaylist = ({songId,userId, setDisplayOption}) => {
+export const ChoosePlaylist = ({songId, songUri,userId, setDisplayOption}) => {
 
     const [playlist, setPlaylist] = useState(null);
     const [showPopUp, setShowPopUp] = useState(false);
 
     const user_token = window.localStorage.getItem("user_token");
-    let intervalId;
+    let intervalId; 
+
+    const setTimeSlice = () => {
+
+        setShowPopUp(true); /*For temporarily showing a success message*/
+            intervalId = setTimeout( () => {
+                setShowPopUp(false);
+                clearInterval(intervalId);
+            }, 3000);
+
+    }
 
     const addSong = (playlistId) => {
 
@@ -18,7 +29,7 @@ export const ChoosePlaylist = ({songId,userId, setDisplayOption}) => {
                 'Authorization': `Bearer ${user_token}`,
             },
             body: JSON.stringify({
-                uris: [songId]
+                uris: [songUri]
             })
         })
         .then( (res) => {
@@ -26,26 +37,36 @@ export const ChoosePlaylist = ({songId,userId, setDisplayOption}) => {
                 throw new Error("Can't add song ");
             }
             console.log("song added");
-
-            setShowPopUp(true); /*For temporarily showing a success message*/
-            intervalId = setTimeout( () => {
-
-                setShowPopUp(false);
-                clearInterval(intervalId);
-
-            }, 3000);
+            clearInterval(intervalId);
+            setTimeSlice();
 
         })
         .catch( (e) => {
             console.log(e.message);
         })
-
-        return () => {
-            clearInterval(intervalId);
-        }
     };
 
+    const addToCollection = () => {
 
+        fetch(`https://api.spotify.com/v1/me/tracks?ids=${songId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${user_token}`,
+            },
+        })
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error("Can't add song ");
+            }
+            console.log("song added");
+
+            clearInterval(intervalId);
+            setTimeSlice();
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        })
+    }
 
     useEffect ( () => {
         
@@ -69,6 +90,10 @@ export const ChoosePlaylist = ({songId,userId, setDisplayOption}) => {
         .catch( (e) => {
             console.log(e.message);
         })
+
+        return () => {
+            clearInterval(intervalId);
+        }
     }, [user_token])
 
     return (
@@ -76,21 +101,24 @@ export const ChoosePlaylist = ({songId,userId, setDisplayOption}) => {
         <main className=" w-full h-full  p-4  fixed z-10 left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4  bg-black">
 
             {/*Display a pop up message after successfull insertion of song */}
-            <div className=" absolute  left-2/4 -translate-x-2/4  w-6/12 h-10 flex justify-center items-center bg-cyan-500 rounded-xl p-4 transition-transform duration-500"
-            style={{
-                transform: showPopUp ? "": "translateY(-600px)" ,
-            }}>
-                <span className=" text-black font-bold mr-4">Song added</span>
-                <span className=" bg-black rounded-sm" onClick={() => {
-                    setShowPopUp(false);
-                }}><CloseIcon/></span>
-            </div>
+            <PopUpMessage display={showPopUp} message="Song added" />
 
             <section className=" flex flex-col gap-4">
                 <h1 className=" text-center text-xl font-semibold">Add to playlist</h1>
                 {playlist && <div className=" mt-4 flex flex-col  p-2 gap-4 w-full">
+                    <div className=" flex justify-between gap-4 w-full">
+                           <div className=" flex gap-4 justify-center"> 
+                                <img src={image} width={60} className=" rounded-md"></img>
+                                <div className=" flex">
+                                    <div className=" text-lg font-bold">LikedSong</div>
+                                </div>
+                            </div>
+                            <div className=" flex items-center cursor-pointer" onClick={() => {
+                                addToCollection();
+                            }}><PlusIcon /></div>                          
+                    </div>
                     {playlist.map( (eachPlaylist, index) => (
-                        <div className=" flex justify-between gap-4 w-full" key={index + " " + eachPlaylist.id}>
+                        <div className=" flex justify-between gap-4 w-full " key={index + " " + eachPlaylist.id}>
                            <div className=" flex gap-4 justify-center"> 
                                 {eachPlaylist.images ? <img src={eachPlaylist.images[0].url} width={60} className=" rounded-md"></img> : <MusicIcon />}
                                 <div className=" flex flex-col justify-center">
@@ -98,9 +126,10 @@ export const ChoosePlaylist = ({songId,userId, setDisplayOption}) => {
                                     <div className=" opacity-60">{eachPlaylist.tracks.total} songs</div>
                                 </div>
                             </div>
-                            <div className=" flex items-center" onClick={() => {
+                            <div className=" flex items-center cursor-pointer" onClick={() => {
                                 addSong(eachPlaylist.id);
-                            }}><PlusIcon /></div>                          
+                            }}><PlusIcon />
+                            </div>                          
                         </div>
                     ))}
                 </div>}
