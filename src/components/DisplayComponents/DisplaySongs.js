@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CloseIcon, PlusIcon } from "./Icons/Icons";
+import { CloseIcon, PlusIcon } from "../Icons/Icons";
 
 
 export const DisplaySong = ({user, playlistId, setAddStatus}) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { CloseIcon, MusicIcon, PlusIcon } from "./Icons/Icons";
-import { PopUpMessage } from "../Animation/PopUpMessage";
-import image from "./LikedSongCoverPage.png";
+import { CloseIcon, MusicIcon, PlusIcon } from "../Icons/Icons";
+import { PopUpMessage } from "../../Animation/PopUpMessage";
+import image from "../LikedSongCoverPage.png";
 
 export const ChoosePlaylist = ({songId, songUri,userId, setDisplayOption}) => {
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect, useState } from "react";
-import  { PlayButtonIcon } from "./Icons/Icons";
+import  { PlayButtonIcon } from "../Icons/Icons";
 
 
 const ListItems = (props) => {

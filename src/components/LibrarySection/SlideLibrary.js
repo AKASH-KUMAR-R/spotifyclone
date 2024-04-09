@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CloseIcon, HistoryIcon, PlusIcon, ZapIcon } from "./Icons/Icons";
+import { CloseIcon, HistoryIcon, PlusIcon, ZapIcon } from "../Icons/Icons";
 
 
 export const SlideLibrary = ({showLibrary}) => {

@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { PlusIcon } from "./Icons/Icons";
+import { PlusIcon } from "../Icons/Icons";
 import { ChoosePlaylist } from "./ChoosePlaylist";
-import { MoreIcon } from "./Icons/MoreIcon";
-import { TrackMenu } from "./TrackMenu";
-import { RemoveIcon } from "./Icons/RemoveIcon";
-import { PopUpMessage } from "../Animation/PopUpMessage";
-import image from "./LikedSongCoverPage.png";
+import { RemoveIcon } from "../Icons/RemoveIcon";
+import { PopUpMessage } from "../../Animation/PopUpMessage";
+import image from "../LikedSongCoverPage.png";
 
 export const CollectionSongs = () => {
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import ExtractColorFromImage from "./ExtractColorFromImage";
+import ExtractColorFromImage from "../ExtractColorFromImage";
 
 const DisplayAlbum = (props) => {
 
@@ -42,11 +42,14 @@ const DisplayAlbum = (props) => {
 
     return (
         <div className="temp-section mt-10">
+            {/*Header section for the album page.*/}
             { albumDetails && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row" style={ {
                 backgroundColor: `${color}`,
                 backdropFilter: `blur(10px)`,
             }}>
+                {/*To extract some prominent colors from the image using some fixed points */}
                 <ExtractColorFromImage imageUrl={albumDetails.images[0].url} setColor={setColor}/>
+                
                     <img src={albumDetails.images[0].url} className=" w-40 h-40 sm:w-52 sm:h-52 rounded-lg"></img>
                     <div className="artist-details w-full items-center sm:items-start sm:ml-6 flex flex-col overflow-hidden mt-1">
                         <span className=" text-3xl sm:text-4xl  text-ellipsis">{albumDetails.name}</span>

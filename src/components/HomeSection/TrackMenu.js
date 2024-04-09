@@ -1,5 +1,5 @@
-import { PlusIcon } from "./Icons/Icons";
-import { RemoveIcon } from "./Icons/RemoveIcon";
+import { PlusIcon } from "../Icons/Icons";
+import { RemoveIcon } from "../Icons/RemoveIcon";
 
 
 export const TrackMenu = ({userData, position}) => {

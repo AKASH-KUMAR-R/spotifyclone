@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import PopularTrack from "./PopularTrack";
-import { Link } from "react-router-dom/cjs/react-router-dom";
-import ListItems from "./ListItems";
+import ListItems from "../HomeSection/ListItems";
 
 const DisplayArtist = (props) => {
 

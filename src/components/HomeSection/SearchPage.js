@@ -3,7 +3,6 @@ import ListItems from "./ListItems";
 
 const SearchBar = (props) => {
 
-
     const [searchQuery, setQuery] = useState("");
     const [searchType, setSearchType] = useState(
       encodeURIComponent("track,album,artist,show,episode")

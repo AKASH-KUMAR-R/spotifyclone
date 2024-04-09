@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CloseIcon, LoadingIcon } from "./Icons/Icons";
+import { CloseIcon, LoadingIcon } from "../Icons/Icons";
 
 export const CreatePlaylist = ({ user, createStatus, setCreateStatus}) => {
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import useFetch from "./useFetch";
-import ExtractColorFromImage from "./ExtractColorFromImage";
+import useFetch from "../useFetch";
+import ExtractColorFromImage from "../ExtractColorFromImage";
 
 const DisplayShow = (props) => {
 

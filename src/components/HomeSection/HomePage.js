@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import ListItems from "./ListItems";
-import { MusicIcon } from "./Icons/Icons";
+import { MusicIcon } from "../Icons/Icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import image from "./LikedSongCoverPage.png";
+import image from "../LikedSongCoverPage.png";
 
 const HomePage = (props) => {
 

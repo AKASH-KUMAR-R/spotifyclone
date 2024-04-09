@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import TopNav from "./components/TopNav";
-import DisplayArtist from "./components/DisplayArtist";
+import TopNav from "./components/NavBar/TopNav";
+import DisplayArtist from "./components/DisplayComponents/DisplayArtist";
 import { BrowserRouter, Switch , Route} from "react-router-dom";
 
-import DisplayAlbum from "./components/DisplayAlbum";
-import HomePage from "./components/HomePage";
-import DisplayPlaylist from "./components/DisplayPlaylist";
-import DisplayShow from "./components/DisplayShow";
-import DisplayEpisode from "./components/DisplayEpisode";
-import SearchBar from "./components/SearchPage";
+import DisplayAlbum from "./components/DisplayComponents/DisplayAlbum";
+import HomePage from "./components/HomeSection/HomePage";
+import DisplayPlaylist from "./components/DisplayComponents/DisplayPlaylist";
+import DisplayShow from "./components/DisplayComponents/DisplayShow";
+import DisplayEpisode from "./components/DisplayComponents/DisplayEpisode";
+import SearchBar from "./components/HomeSection/SearchPage";
 import { LoginSection } from "./components/LoginSection";
-
-import { LibrarySection } from "./components/LibrarySection";
-import { SlideLibrary } from "./components/SlideLibrary";
-import { BottomNav } from "./components/BottomNav";
-import { YourLibrary } from "./components/YourLibrary";
-import { CollectionSongs } from "./components/CollectionSongs";
+import { LibrarySection } from "./components/LibrarySection/LibrarySection";
+import { SlideLibrary } from "./components/LibrarySection/SlideLibrary";
+import { BottomNav } from "./components/NavBar/BottomNav";
+import { YourLibrary } from "./components/LibrarySection/YourLibrary";
+import { CollectionSongs } from "./components/LibrarySection/CollectionSongs";
 
 
 function App() {

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { MusicIcon, PlusIcon } from "./Icons/Icons";
-import { MoreIcon } from "./Icons/MoreIcon";
+import { MusicIcon, PlusIcon } from "../Icons/Icons";
+import { MoreIcon } from "../Icons/MoreIcon";
 import { DisplaySong } from "./DisplaySongs";
-import {RemoveIcon} from './Icons/RemoveIcon';
-import { ChoosePlaylist } from "./ChoosePlaylist";
-import { PopUpMessage } from "../Animation/PopUpMessage";
+import {RemoveIcon} from '../Icons/RemoveIcon';
+import { ChoosePlaylist } from "../LibrarySection/ChoosePlaylist";
+import { PopUpMessage } from "../../Animation/PopUpMessage";
 
 const DisplayPlaylist = (props) => {
 
