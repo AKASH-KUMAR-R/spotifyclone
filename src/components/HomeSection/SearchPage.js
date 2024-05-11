@@ -22,9 +22,6 @@ const SearchBar = (props) => {
     
     const [selectedButton, setSelectStatus] = useState("all");
 
-    
-    
-
     const fetchResult = () => {
 
       fetch(`https://api.spotify.com/v1/search?q=${encodedQuery}&type=${searchType}&limit=10&market=ES`, {
@@ -184,7 +181,7 @@ const SearchBar = (props) => {
           </div>
         </div>
         
-         <div className=" w-full h-auto mt-4 flex flex-col gap-4" >
+         <div className=" w-full h-auto mt-4 flex flex-col gap-4 p-6" >
           {!searchResult && <div className=" w-full  flex justify-center items-center ">
 
             <span className=" text-2xl mt-20">Search Not Founded</span>

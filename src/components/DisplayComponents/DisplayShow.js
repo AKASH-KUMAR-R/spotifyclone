@@ -7,10 +7,12 @@ const DisplayShow = (props) => {
 
     const [color, setColor] = useState(null);
     const {showId} = useParams();
-    const [showData, setShowData] = useState(null);
+
+    const [follow, setFollowStatus] = useState(false);
+    
 
 
-    const {err, pending, data} = useFetch(`https://api.spotify.com/v1/shows/${showId}`, 'GET', props.access_token);
+    const { data} = useFetch(`https://api.spotify.com/v1/shows/${showId}`, 'GET', props.access_token);
 
     const formatDuration = (duration) => {
 
@@ -39,6 +41,10 @@ const DisplayShow = (props) => {
          return (Math.floor((duration / 60000)) + " min " + seconds + " sec");
         
     }
+
+    const ModifyFollowStatus = () => {
+        console.log("coming");
+    }
     return (
         <div className="temp-section mt-10">
             { data && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row" style={ {
@@ -57,12 +63,17 @@ const DisplayShow = (props) => {
                         </span>
                     </div>
                 </div>}
-            <div className= " p-5 w-2/5 min-w-fit h-12 flex gap-5">
-                <button className="follow-button w-20 h-8  rounded-full bg-white bg-opacity-30 ">Follow</button>
-                <img src="https://img.icons8.com/ios-filled/50/FFFFFF/more.png" className="more-button w-9 h-8 " alt="more"/>
 
+                <div className=" flex h-12 p-4">
+                    <button className=" w-20 p-2 h-8 border border-white rounded-md font-semibold text-xs button-ani" 
+                    style={{
+                        borderColor: follow ? "rgb(256, 256, 256)" : "rgb(256, 256, 256 , 0.4)",
+                    }} 
+                    onClick={() => {ModifyFollowStatus()}}>
+                        <span>{follow ? "Following" : "Follow"}</span>
+                    </button>
+                </div>
 
-            </div>
             {data && <div className="show-details  mt-5 w-full h-auto sm:w-6/12 overflow-hidden text-ellipsis p-4 rounded-lg">
                 <h1 className=" text-2xl mb-4">About</h1>
                 <p>{data.description}</p>

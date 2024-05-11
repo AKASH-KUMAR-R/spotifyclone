@@ -2,10 +2,21 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { LibraryIcon } from "../Icons/Icons";
 import {LeftArrow} from '../Icons/LeftArrow';
 import {RightArrow} from '../Icons/RightArrow';
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import LoginContext from "../ContestLogin/LoginDetails";
 
 const TopNav = ({setShowLibrary}) => {
 
     const history = useHistory();
+    // const [isLogIn, setIsLogIn] = useState(window.localStorage.getItem('user_token') ? true : false);
+    const {isLogIn, setIsLogIn} = useContext(LoginContext);
+
+    useEffect( () => {
+      setIsLogIn(window.localStorage.getItem('user_token') ? true : false);
+    }, [])
+
     const moveForward = () => {
         history.goForward();
     }
@@ -13,6 +24,12 @@ const TopNav = ({setShowLibrary}) => {
     const moveBackward = () => {
         history.goBack();
     }
+
+    const LogOut = () => {
+      window.localStorage.removeItem('user_token');
+      setIsLogIn(false);
+    }
+
 
     return (
       <div className="top-section w-full absolute p-3 flex justify-between items-center z-10 ">
@@ -25,7 +42,7 @@ const TopNav = ({setShowLibrary}) => {
               
             </div>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 justify-center items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokelinecap="round" strokeLinejoin="round" className="lucide lucide-bell">
                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                 <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
@@ -41,6 +58,10 @@ const TopNav = ({setShowLibrary}) => {
                 <circle cx="12" cy="10" r="4"/>
                 <circle cx="12" cy="12" r="10"/>
               </svg>
+              <button className=" w-20 h-8 outline outline-white rounded-md hover:outline-slate-500 transition-all duration-200"
+                onClick={() => {LogOut()}}>
+                  {isLogIn ? <>Log out</> : <Link to="/login">Sign in</Link>}
+                </button>
           </div>
     </div>
           
