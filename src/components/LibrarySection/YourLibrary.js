@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MusicIcon, PlusIcon, SearchIcon, UserIcon } from "../Icons/Icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { CreatePlaylist } from "./CreatePlaylist";
+import LoginContext from "../ContestLogin/LoginDetails";
 
 
 export const YourLibrary = () => {
@@ -11,7 +12,7 @@ export const YourLibrary = () => {
     const [createStatus, setCreateStatus] = useState(false);
     const [user, setUser] = useState("");
 
-    
+    const {isLogIn} = useContext(LoginContext);
 
     
 
@@ -105,6 +106,10 @@ export const YourLibrary = () => {
                     </div>
                 </header>
 
+            {!isLogIn && <div className=" w-full p-6 text-center font-bold">
+                <p className=" text-2xl mb-2">Login to Access Your Library</p>
+                <p className=" text-sm">Sign in to explore your favorite music and playlists</p>   
+            </div>}
             {playlist && <section className=" p-2 w-full flex flex-col gap-2 ">
                 {playlist.items.map((eachItem, index) => (
                     <Link to={`/playlist/${eachItem.id}`} ><div 

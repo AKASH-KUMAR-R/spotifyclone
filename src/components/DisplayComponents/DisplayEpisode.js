@@ -32,6 +32,7 @@ const DisplayEpisode = (props) => {
         .catch ( (e) => {
             console.log(e.message);
         })
+        
     }, [episodeId]);
 
 

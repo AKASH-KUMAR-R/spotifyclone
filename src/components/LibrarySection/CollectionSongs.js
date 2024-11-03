@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { PlusIcon } from "../Icons/Icons";
+import { MoreIcon } from "../Icons/MoreIcon";
 import { ChoosePlaylist } from "./ChoosePlaylist";
-import { RemoveIcon } from "../Icons/RemoveIcon";
 import { PopUpMessage } from "../../Animation/PopUpMessage";
 import image from "../LikedSongCoverPage.png";
+import { BottomUpMenu } from "../../Animation/BottomUpMenu";
 
 export const CollectionSongs = () => {
 
@@ -11,9 +11,14 @@ export const CollectionSongs = () => {
     const user_token = window.localStorage.getItem("user_token");
     const [user, setUser] = useState(null);
 
-    const [displayOption , setDisplayOption] = useState(false);
     const [songUri, setSongUri] = useState(null);
+    const [songId, setSongId] = useState(null);
+    const [songIndex, setSongIndex] = useState(null);
+
+    const [displayOption , setDisplayOption] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
     const [showPop, setShowPopUp] = useState(false);
+    
     let intervalId;
 
 
@@ -36,17 +41,9 @@ export const CollectionSongs = () => {
             }, 3000);
 
     }
-    const removeSavedTrack = (trackId, trackIndex) => {
+    const removeSavedTrack = () => {
 
-        setLikedSongs(prev => {
-            const newItems = [...prev.items.slice(0, trackIndex), ...prev.items.slice(trackIndex + 1)];
-            return{
-                ...prev,
-                items: newItems
-            }
-
-        })
-        fetch(`https://api.spotify.com/v1/me/tracks?ids=${trackId}`, {
+        fetch(`https://api.spotify.com/v1/me/tracks?ids=${songId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization' : `Bearer ${user_token}`
@@ -59,9 +56,25 @@ export const CollectionSongs = () => {
             setTimeSlice();
             console.log("song deleted");
         })
+        .catch( (e) => {
+            console.log(e.message);
+        })
+
+        updateTrack();
     }
 
-    
+    const updateTrack = () => {
+        setLikedSongs(prev => {
+            const newItems = [...prev.items.slice(0, songIndex), ...prev.items.slice(songIndex + 1)];
+            return{
+                ...prev,
+                items: newItems
+            }
+
+        })
+    };
+
+
     useEffect( () => {
         /*Fetching user details */
         fetch('https://api.spotify.com/v1/me', {
@@ -153,15 +166,14 @@ export const CollectionSongs = () => {
                   </div>
                   <div className="album-name">{eachSong.track.album.name}</div>
                   <div className="duration flex gap-2">{getDuration(eachSong.track.duration_ms)}
-                    <div className=" flex items-center justify-center gap-2">
-                        <span onClick={() => {
-                            setSongUri(eachSong.track.uri);
-                            setDisplayOption(true);
-                        }}><PlusIcon /></span>
-                        <span 
-                        onClick={() => {
-                            removeSavedTrack(eachSong.track.id, index);
-                        }}><RemoveIcon /></span>
+                  <div className=" cursor-pointer active:scale-95 duration-100"
+                    onClick={() => {
+                        setShowMenu( prev => !prev);
+                        setSongUri(eachSong.track.uri);
+                        setSongId(eachSong.track.id);
+                        setSongIndex(index);
+                    }}>
+                        <MoreIcon />
                     </div>
                   </div>
                 </div>
@@ -169,6 +181,18 @@ export const CollectionSongs = () => {
               ))}
             
           </div>}
+
+          {user  && <div className="fixed left-2/4 -translate-x-2/4 translate-y-full  bottom-0 w-full sm:w-2/4 h-1/2 block">
+                <BottomUpMenu 
+                    songUri={songUri}
+                    displayMenu={showMenu} 
+                    setShowMenu={setShowMenu}
+                    userId={true}
+                    ownerId={true}
+                    removeTrack={removeSavedTrack}
+                    setDisplayOption={setDisplayOption}
+                />
+            </div>}
         </div>
     );
 }

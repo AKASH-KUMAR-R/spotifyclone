@@ -15,6 +15,7 @@ const HomePage = (props) => {
     const [showsList, setShowsList] = useState(null);
 
     const [libraryData, setLibraryData] = useState(null);
+
     const user_token = window.localStorage.getItem("user_token");
 
     const fetchData = async (url, options, retries = 3, delay = 1000) => {
@@ -222,6 +223,7 @@ const HomePage = (props) => {
                 <span className=" text-4xl whitespace-nowrap">Good Afternoon,</span>
                 <span className=" text-lg">Enjoy each moment with spotify by listening to your favourite songs.</span>
                 <span className=" text-3xl">Let's get start</span>
+                
             </div>
 
             <div className=" flex flex-col ">

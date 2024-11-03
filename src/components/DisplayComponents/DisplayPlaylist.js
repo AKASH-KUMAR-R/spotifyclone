@@ -6,6 +6,8 @@ import { DisplaySong } from "./DisplaySongs";
 import {RemoveIcon} from '../Icons/RemoveIcon';
 import { ChoosePlaylist } from "../LibrarySection/ChoosePlaylist";
 import { PopUpMessage } from "../../Animation/PopUpMessage";
+import { BottomUpMenu } from "../../Animation/BottomUpMenu";
+import ExtractColorFromImage from "../ExtractColorFromImage";
 
 const DisplayPlaylist = (props) => {
 
@@ -15,13 +17,17 @@ const DisplayPlaylist = (props) => {
 
     const [addStatus, setAddStatus] = useState(false);
     const [displayOption , setDisplayOption] = useState(false);
+
     const [songUri, setSongUri] = useState(null);
     const [songId, setSongId] = useState(null);
+    const [songIndex, setSongIndex] = useState(null);
 
     const [confirmStatus, setConfirmStatus] = useState(false);
     const [userFollow, setUserFollow] = useState(false);
     const [showPop, setShowPop] = useState(false);
-    
+
+    const [showMenu, setShowMenu] = useState(false);
+    const [color, setColor] = useState(null);
 
     const [showDeletePopMessage, setShowDeletePopMessage] = useState(false); 
     const user_token = window.localStorage.getItem("user_token");
@@ -46,7 +52,6 @@ const DisplayPlaylist = (props) => {
         })
         .then( (data) => {
             setUser(data);
-            console.log(data);
         })
         .catch( (e) => {
             console.log(e.message);
@@ -67,7 +72,6 @@ const DisplayPlaylist = (props) => {
         })
         .then ( (data) => {
             setPlaylistDetails(data);
-            console.log(data);
         })
         .catch ( (e) => {
             console.log(e.message);
@@ -89,7 +93,6 @@ const DisplayPlaylist = (props) => {
         })
         .then( (data) => {
             setUserFollow(data[0]);
-            console.log(data[0]);
         })
         .catch( (e) => {
             console.log(e.message);
@@ -139,6 +142,8 @@ const DisplayPlaylist = (props) => {
         }
     };
 
+    
+
     const setTimeSlice = () => {
 
         setShowDeletePopMessage(true); /*For temporarily showing a success message*/
@@ -149,10 +154,11 @@ const DisplayPlaylist = (props) => {
 
     }
 
-    const removeTrack = (trackId, trackIndex) => {
+    
 
+    const updateTrack = () => {
         setPlaylistDetails(prev => {
-            const newItems = [...prev.tracks.items.slice(0, trackIndex), ...prev.tracks.items.slice(trackIndex + 1)];
+            const newItems = [...prev.tracks.items.slice(0, songIndex), ...prev.tracks.items.slice(songIndex + 1)];
             return{
                 ...prev,
                 tracks: {
@@ -162,23 +168,7 @@ const DisplayPlaylist = (props) => {
             }
 
         })
-        fetch(`https://api.spotify.com/v1/me/tracks?ids=${trackId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization' : `Bearer ${user_token}`
-            }
-        })
-        .then( (res) => {
-            if (!res.ok) {
-                throw new Error("Can't delete data");
-            }
-            setTimeSlice();
-            console.log("song deleted");
-        })
-        .catch( (e) => {
-            console.log(e.message);
-        })
-    }
+    };
 
     const ModifyFollowStatus = () =>  {
 
@@ -201,29 +191,57 @@ const DisplayPlaylist = (props) => {
         })
 
     }
+    const removeTrack = () => {
 
+        fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization' : `Bearer ${user_token}`
+            },
+            body: JSON.stringify({
+                "tracks":[
+                    {
+                        'uri': songUri,
+                    }   
+                ]
+            })
+        })
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error("Can't delete data");
+            }
+            setTimeSlice();
+            updateTrack();
+            console.log("song deleted");
+        })
+        .catch( (e) => {
+            console.log(e.message);
+        });
+    };
+    
 
     return (
         <div className=" w-full h-full mt-10 relative">
             
             <PopUpMessage display={showPop} message="Playlist removed" />
             <PopUpMessage display={showDeletePopMessage} message="song deleted" />
-            {confirmStatus && <div className=" absolute flex justify-center items-center z-10 w-full h-full top-0 backdrop-blur-sm">
+            {confirmStatus && <div className=" fixed flex justify-center items-center z-10 w-full h-full top-0 backdrop-blur-sm">
                 <div className=" w-8/12 h-1/5 flex flex-col items-center justify-center gap-4 spotify-component-bg-color ">
                     <h1 className=" text-center text-sm ">Do you want to delete "{playlistDetails.name}" ? </h1>
                     <div className=" w-full flex justify-around text-black font-semibold">
-                        <button className=" w-20 h-8 rounded-lg bg-red-600 text-xs" onClick={() => {
+                        <button className=" w-20 h-8 rounded-lg spotify-green-bg-color  text-xs" onClick={() => {
                             setConfirmStatus(false);
                         }}>Cancel</button>
-                        <button className=" w-20 h-8 rounded-lg spotify-green-bg-color text-xs" onClick={() => {
+                        <button className=" w-20 h-8 rounded-lg bg-red-600 text-xs" onClick={() => {
                             deteleLibraryItem();
                             setConfirmStatus(false);
                         }}>Delete</button>
                     </div>
                 </div>
             </div>}
-
-            { playlistDetails && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row">
+            
+            {playlistDetails && <ExtractColorFromImage imageUrl={playlistDetails.images[0].url} setColor={setColor} />}
+            {playlistDetails && <div className="artist-image w-full h-4/12 flex flex-col items-center p-4  sm:flex-row" style={{backgroundColor: color}}>
                     {playlistDetails.images.length > 0  ? <img src={playlistDetails.images[0].url} className = " w-40 h-40 sm:w-52 sm:h-52 rounded-lg" alt="playlist-view"></img> : <MusicIcon />}
                     <div className="artist-details w-full items-center sm:items-start sm:ml-6 flex flex-col overflow-hidden mt-1">
                         <span className="text-3xl sm:text-4xl  text-ellipsis">{playlistDetails.name}</span>
@@ -240,11 +258,13 @@ const DisplayPlaylist = (props) => {
                 {(playlistDetails.owner.id === user.id) && <div className=" flex items-center gap-4 opacity-60">
                     <span onClick={() => {
                         setAddStatus(true);
-                    }}><PlusIcon /></span>
-                    <span><MoreIcon /></span>
+                    }}
+                    className=" cursor-pointer"><PlusIcon /></span>
+                    <span className=" cursor-pointer"><MoreIcon /></span>
                     {(playlistDetails.owner.id === user.id ) && <span onClick={() => {
                         setConfirmStatus(true);
-                    }}><RemoveIcon /></span>}
+                    }}
+                    className=" cursor-pointer"><RemoveIcon /></span>}
                 </div>}
 
 
@@ -282,24 +302,34 @@ const DisplayPlaylist = (props) => {
                   </div>
                   <div className="album-name">{eachSong.track.album.name}</div>
                   <div className="duration flex gap-6">{getDuration(eachSong.track.duration_ms)}
-                    <div className=" flex items-center justify-center gap-2">
-                        <span onClick={() => {
-                            setSongUri(eachSong.track.uri);
-                            setSongId(eachSong.track.id)
-                            setDisplayOption(true);
-                        }}><PlusIcon /></span>
-                        <span
-                        onClick={() => {
-                            removeTrack(eachSong.track.id, index);
-                        }}><RemoveIcon /></span>
+                    <div className=" cursor-pointer active:scale-95 duration-100"
+                    onClick={() => {
+                        setShowMenu( prev => !prev);
+                        setSongUri(eachSong.track.uri);
+                        setSongId(eachSong.track.id);
+                        setSongIndex(index);
+                    }}>
+                        <MoreIcon />
                     </div>
+                    
                   </div>
                 </div>
                 
               ))}
             
           </div>}
-
+              
+            {user && playlistDetails && <div className=" fixed left-2/4 -translate-x-2/4 translate-y-full  bottom-0 w-full sm:w-2/4 h-1/2 block">
+                <BottomUpMenu 
+                    songUri={songUri}
+                    displayMenu={showMenu} 
+                    setShowMenu={setShowMenu}
+                    userId={user.id}
+                    ownerId={playlistDetails.owner.id}
+                    removeTrack={removeTrack}
+                    setDisplayOption={setDisplayOption}
+                />
+            </div>}
         </div>
     );
 }

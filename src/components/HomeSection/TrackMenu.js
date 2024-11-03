@@ -17,7 +17,6 @@ export const TrackMenu = ({userData, position}) => {
             <div className=" flex ">
                 <RemoveIcon />
                 <span>Remove from playlist</span>
-                
             </div>
         </div>
     );

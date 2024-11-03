@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import TopNav from "./components/NavBar/TopNav";
 import DisplayArtist from "./components/DisplayComponents/DisplayArtist";
 import { BrowserRouter, Switch , Route} from "react-router-dom";
-
 import DisplayAlbum from "./components/DisplayComponents/DisplayAlbum";
 import HomePage from "./components/HomeSection/HomePage";
 import DisplayPlaylist from "./components/DisplayComponents/DisplayPlaylist";
@@ -15,6 +14,8 @@ import { SlideLibrary } from "./components/LibrarySection/SlideLibrary";
 import { BottomNav } from "./components/NavBar/BottomNav";
 import { YourLibrary } from "./components/LibrarySection/YourLibrary";
 import { CollectionSongs } from "./components/LibrarySection/CollectionSongs";
+import {LoginDetail} from "./components/ContestLogin/LoginDetails";
+import PageNotFound from "./components/PageNotFound";
 
 
 function App() {
@@ -113,8 +114,10 @@ function App() {
 
 
   return (
+    
     <BrowserRouter>
     <main className=" flex absolute left-0 top-0 w-full h-full overflow-hidden ">
+    <LoginDetail >
       <LibrarySection  />
       <SlideLibrary showLibrary={showLibrary} />
 
@@ -150,14 +153,19 @@ function App() {
             <Route path="/collection/tracks">
               <CollectionSongs />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               {access_token && <HomePage access_token = {access_token}/>}
+            </Route>
+            <Route path="*" >
+              <PageNotFound />
             </Route>
           </Switch>
         </div>
       </div>
+      </LoginDetail>
     </main>
    </BrowserRouter>
+   
   );
 }
 
